@@ -46,7 +46,6 @@ class StudentSubmission
     private Collection $studentSubmissionFiles;
 
     #[ORM\OneToOne(mappedBy: 'studentSubmission', cascade: ['persist', 'remove'])]
-    #[Assert\NotNull(message: 'Grade must be assigned.')]
     private ?Grade $grade = null;
 
     public function __construct()
