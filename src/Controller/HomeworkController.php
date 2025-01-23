@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Constants\UserRoles;
 use App\Decoder\FileBagDecoder\HomeworkFileBagDecoder;
 use App\Decoder\Homework\HomeworkPostDecoder;
+use App\Decoder\Homework\HomeworkUpdateDecoder;
 use App\Entity\Homework;
 use App\Request\Homework\HomeworkPostRequest;
+use App\Request\Homework\HomeworkUpdateRequest;
 use App\Services\HomeworkService;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
@@ -23,7 +25,6 @@ class HomeworkController extends AbstractController
         private readonly UserService $userService,
         private readonly HomeworkService $homeworkService,
         private readonly HomeworkFileBagDecoder $fileBagDecoder,
-        private readonly HomeworkPostDecoder $paramsDecoder,
     ) {
     }
 
@@ -37,11 +38,11 @@ class HomeworkController extends AbstractController
 
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/homework', name: 'homework', methods: ['POST'])]
-    public function store(HomeworkPostRequest $request): JsonResponse
+    public function store(HomeworkPostRequest $request, HomeworkPostDecoder $paramsDecoder): JsonResponse
     {
         try {
             $user = $this->userService->getCurrentUser();
-            $params = $this->paramsDecoder->decode($request);
+            $params = $paramsDecoder->decode($request);
             $files = $this->fileBagDecoder->decode($request->getFiles());
 
             return new JsonResponse($this->homeworkService->postAction($params, $user, $files), Response::HTTP_OK);
@@ -84,10 +85,26 @@ class HomeworkController extends AbstractController
     {
         try {
             $user = $this->userService->getCurrentUser();
-
             $this->homeworkService->deleteAction($homework, $user);
 
             return new JsonResponse('Success', Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            return ExceptionHandleHelper::handleException($exception);
+        }
+    }
+
+    #[IsGranted(UserRoles::TEACHER)]
+    #[Route('/homework/{id}', name: 'homework_update', methods: ['PUT'])]
+    public function update(Homework $homework, HomeworkUpdateRequest $request, HomeworkUpdateDecoder $homeworkUpdateDecoder): JsonResponse
+    {
+        try {
+            $user = $this->userService->getCurrentUser();
+            $params = $homeworkUpdateDecoder->decode($request);
+            $files = $this->fileBagDecoder->decode($request->getFiles());
+
+            $updatedHomework = $this->homeworkService->updateAction($homework, $user, $params, $files);
+
+            return new JsonResponse($updatedHomework, Response::HTTP_OK);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
