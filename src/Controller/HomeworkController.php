@@ -28,14 +28,6 @@ class HomeworkController extends AbstractController
     ) {
     }
 
-    #[Route('/homework', name: 'app_homework')]
-    public function index(): Response
-    {
-        return $this->render('homework/index.html.twig', [
-            'controller_name' => 'HomeworkController',
-        ]);
-    }
-
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/homework', name: 'homework', methods: ['POST'])]
     public function store(HomeworkPostRequest $request, HomeworkPostDecoder $paramsDecoder): JsonResponse

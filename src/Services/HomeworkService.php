@@ -20,12 +20,12 @@ use App\Utils\FileHelper;
 readonly class HomeworkService
 {
     public function __construct(
-        private TeacherService      $teacherService,
-        private LessonRepository    $lessonRepository,
-        private HomeworkRepository  $homeworkRepository,
-        private FileHelper          $fileHelper,
-        private StudentRepository   $studentRepository,
-        private HomeworkEncoder     $homeworkEncoder,
+        private TeacherService $teacherService,
+        private LessonRepository $lessonRepository,
+        private HomeworkRepository $homeworkRepository,
+        private FileHelper $fileHelper,
+        private StudentRepository $studentRepository,
+        private HomeworkEncoder $homeworkEncoder,
         private HomeworkFileService $homeworkFileService,
     ) {
     }
