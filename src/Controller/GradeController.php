@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Constants\UserRoles;
 use App\Decoder\Grade\GradePostDecoder;
+use App\Decoder\Grade\GradeUpdateDecoder;
 use App\Entity\Grade;
 use App\Request\Grade\GradePostRequest;
+use App\Request\Grade\GradeUpdateRequest;
 use App\Services\GradeService;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
@@ -34,6 +36,21 @@ class GradeController extends AbstractController
             $params = $decoder->decode($request);
 
             $this->gradeService->postAction($user, $params);
+
+            return new JsonResponse('Success', Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            return ExceptionHandleHelper::handleException($exception);
+        }
+    }
+
+    #[IsGranted(UserRoles::TEACHER)]
+    #[Route('/grade/{id}', name: 'grade_update', methods: ['PATCH'])]
+    public function update(Grade $grade, GradeUpdateRequest $request, GradeUpdateDecoder $decoder): JsonResponse
+    {
+        try {
+            $params = $decoder->decode($request);
+
+            $this->gradeService->updateAction($grade, $params);
 
             return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
