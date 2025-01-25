@@ -7,16 +7,17 @@ use App\Entity\User;
 use App\Params\FilesParams\StudentSubmissionFilesParams;
 use App\Params\StudentSubmission\StudentSubmissionPostParams;
 use App\Repository\StudentSubmissionRepository;
+use App\Shared\Response\Exception\AccessDeniedException;
 use App\Shared\Response\Exception\Homework\HomeworkPermissionException;
 use App\Shared\Response\Exception\Student\StudentNotFoundException;
 
-class StudentSubmissionService
+readonly class StudentSubmissionService
 {
     public function __construct(
         private StudentSubmissionRepository $submissionRepository,
-        private readonly HomeworkService $homeworkService,
-        private readonly StudentService $studentService,
-        private readonly StudentSubmissionFileService $studentSubmissionFileService,
+        private HomeworkService $homeworkService,
+        private StudentService $studentService,
+        private StudentSubmissionFileService $studentSubmissionFileService,
     ) {
     }
 
@@ -48,5 +49,23 @@ class StudentSubmissionService
         $this->submissionRepository->saveAction($studentSubmission);
 
         return $studentSubmission;
+    }
+
+    /**
+     * @throws StudentNotFoundException
+     * @throws AccessDeniedException
+     */
+    public function deleteAction(StudentSubmission $studentSubmission, User $user): void
+    {
+        $student = $this->studentService->getStudentByUser($user);
+        if ($studentSubmission->getStudent()->getId() !== $student->getId()) {
+            throw new AccessDeniedException();
+        }
+
+        $this->submissionRepository->deleteAction($studentSubmission);
+
+        foreach ($studentSubmission->getStudentSubmissionFiles() as $studentSubmissionFile) {
+            $this->studentSubmissionFileService->removeStudentSubmissionFile($studentSubmissionFile);
+        }
     }
 }

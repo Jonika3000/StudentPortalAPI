@@ -26,4 +26,11 @@ readonly class StudentSubmissionFileService
 
         $this->studentSubmissionFileRepository->saveAction($studentSubmissionFile);
     }
+
+    public function removeStudentSubmissionFile(StudentSubmissionFile $studentSubmissionFile): void
+    {
+        $this->fileHelper->deleteFile($studentSubmissionFile->getPath(), false);
+
+        $this->studentSubmissionFileRepository->deleteAction($homeworkFile);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Constants\UserRoles;
 use App\Decoder\FileBagDecoder\StudentSubmissionFileBagDecoder;
 use App\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
+use App\Entity\StudentSubmission;
 use App\Request\StudentSubmission\StudentSubmissionPostRequest;
 use App\Services\StudentSubmissionService;
 use App\Services\UserService;
@@ -34,12 +35,24 @@ class StudentSubmissionController extends AbstractController
             $params = $paramsDecoder->decode($request);
             $files = $this->fileBagDecoder->decode($request->getFiles());
 
-            $this->studentSubmissionService->postAction($params, $user, $files);
-
             return new JsonResponse(
-                'Success',
+                $this->studentSubmissionService->postAction($params, $user, $files),
                 Response::HTTP_OK
             );
+        } catch (\Exception $exception) {
+            return ExceptionHandleHelper::handleException($exception);
+        }
+    }
+
+    #[IsGranted(UserRoles::STUDENT)]
+    #[Route('/student/submission/{id}', name: 'student_submission_delete', methods: ['DELETE'])]
+    public function delete(StudentSubmission $studentSubmission): JsonResponse
+    {
+        try {
+            $user = $this->userService->getCurrentUser();
+            $this->studentSubmissionService->deleteAction($studentSubmission, $user);
+
+            return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }

@@ -23,4 +23,11 @@ class StudentSubmissionFileRepository extends ServiceEntityRepository
         $entityManager->persist($studentSubmissionFile);
         $entityManager->flush();
     }
+
+    public function deleteAction(StudentSubmissionFile $studentSubmissionFile): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($studentSubmissionFile);
+        $entityManager->flush();
+    }
 }

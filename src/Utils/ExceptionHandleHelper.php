@@ -3,7 +3,6 @@
 namespace App\Utils;
 
 use App\Constants\ErrorCodes;
-use App\Shared\Response\Exception\Homework\HomeworkPermissionException;
 use App\Shared\Response\Exception\Student\StudentNotFoundException;
 use App\Shared\Response\Exception\Student\StudentSubmissionNotFound;
 use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;
@@ -41,9 +40,9 @@ class ExceptionHandleHelper
             'code' => ErrorCodes::MAIL_ERROR,
             'message' => 'Mail error occurred.',
         ],
-        HomeworkPermissionException::class => [
+        \App\Shared\Response\Exception\AccessDeniedException::class => [
             'code' => ErrorCodes::HOME_WORK_PERMISSION,
-            'message' => 'This homework does not belong to you.',
+            'message' => 'Access denied',
         ],
     ];
 
