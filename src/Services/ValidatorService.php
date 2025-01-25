@@ -8,9 +8,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 readonly class ValidatorService
 {
     public function __construct(
-        private ValidatorInterface $validator
-    )
-    {
+        private ValidatorInterface $validator,
+    ) {
     }
 
     public function validateObject(mixed $object): bool

@@ -156,4 +156,14 @@ readonly class HomeworkService
 
         return $homework;
     }
+
+    public function isHomeworkBelongsToStudent(Homework $homework, User $student): bool
+    {
+        return $homework->getLesson()->getClassroom()->getStudents()->contains($student);
+    }
+
+    public function findHomeworkById(int $id): ?Homework
+    {
+        return $this->homeworkRepository->find($id);
+    }
 }

@@ -16,6 +16,14 @@ class StudentSubmissionRepository extends ServiceEntityRepository
         parent::__construct($registry, StudentSubmission::class);
     }
 
+    public function saveAction(StudentSubmission $studentSubmission): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        $entityManager->persist($studentSubmission);
+        $entityManager->flush();
+    }
+
     //    /**
     //     * @return StudentSubmission[] Returns an array of StudentSubmission objects
     //     */

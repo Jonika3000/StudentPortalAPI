@@ -18,5 +18,4 @@ class GradeUpdateRequest extends BaseRequest
         maxMessage: 'Comment cannot be longer than {{ limit }} characters.'
     )]
     public string $comment;
-
 }

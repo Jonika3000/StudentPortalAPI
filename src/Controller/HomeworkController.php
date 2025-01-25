@@ -86,7 +86,7 @@ class HomeworkController extends AbstractController
     }
 
     #[IsGranted(UserRoles::TEACHER)]
-    #[Route('/homework/{id}', name: 'homework_update', methods: ['PUT'])]
+    #[Route('/homework/{id}', name: 'homework_update', methods: ['PATCH'])]
     public function update(Homework $homework, HomeworkUpdateRequest $request, HomeworkUpdateDecoder $homeworkUpdateDecoder): JsonResponse
     {
         try {

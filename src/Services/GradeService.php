@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\Grade;
 use App\Entity\User;
 use App\Params\Grade\GradePostParams;
+use App\Params\Grade\GradeUpdateParams;
 use App\Repository\GradeRepository;
 use App\Repository\StudentSubmissionRepository;
 use App\Shared\Response\Exception\Student\StudentSubmissionNotFound;
@@ -55,7 +56,7 @@ class GradeService extends AbstractController
     /**
      * @throws AccessDeniedException
      */
-    public function updateAction(Grade $grade, $params): void
+    public function updateAction(Grade $grade, GradeUpdateParams $params): void
     {
         if (!$this->authorizationChecker->isGranted('grade', $grade->getStudentSubmission())) {
             throw new AccessDeniedException();

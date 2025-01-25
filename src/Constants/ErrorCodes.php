@@ -12,4 +12,5 @@ class ErrorCodes
     public const STUDENT_NOT_FOUND = 'STUDENT_NOT_FOUND';
     public const UNEXPECTED_ERROR = 'UNEXPECTED_ERROR';
     public const MAIL_ERROR = 'MAIL_ERROR';
+    public const HOME_WORK_PERMISSION = 'HOME_WORK_PERMISSION';
 }

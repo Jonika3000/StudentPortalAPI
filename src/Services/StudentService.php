@@ -10,9 +10,8 @@ use App\Shared\Response\Exception\Student\StudentNotFoundException;
 readonly class StudentService
 {
     public function __construct(
-        private StudentRepository $studentRepository
-    )
-    {
+        private StudentRepository $studentRepository,
+    ) {
     }
 
     /**

@@ -3,11 +3,9 @@
 namespace App\Request\StudentSubmission;
 
 use App\Shared\BaseRequest;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Type;
 
 class StudentSubmissionPostRequest extends BaseRequest
 {
@@ -22,9 +20,4 @@ class StudentSubmissionPostRequest extends BaseRequest
     #[NotBlank]
     #[NotNull]
     public int $homework;
-
-    #[NotBlank]
-    #[Groups('input')]
-    #[Type(\DateTimeInterface::class)]
-    public ?\DateTimeInterface $submittedDate;
 }
