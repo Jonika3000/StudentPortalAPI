@@ -66,7 +66,7 @@ class StudentSubmissionController extends AbstractController
             $user = $this->userService->getCurrentUser();
 
             return new JsonResponse(
-                $this->studentSubmissionService->getAction($studentSubmission, $user),
+                $this->studentSubmissionService->getByUser($studentSubmission, $user),
                 Response::HTTP_OK
             );
         } catch (\Exception $exception) {
