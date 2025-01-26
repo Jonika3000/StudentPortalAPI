@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Constants\UserRoles;
 use App\Decoder\FileBagDecoder\StudentSubmissionFileBagDecoder;
 use App\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
+use App\Decoder\StudentSubmission\StudentSubmissionUpdateDecoder;
 use App\Entity\StudentSubmission;
 use App\Request\StudentSubmission\StudentSubmissionPostRequest;
+use App\Request\StudentSubmission\StudentSubmissionUpdateRequest;
 use App\Services\StudentSubmissionService;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
@@ -67,6 +69,27 @@ class StudentSubmissionController extends AbstractController
 
             return new JsonResponse(
                 $this->studentSubmissionService->getByUser($studentSubmission, $user),
+                Response::HTTP_OK
+            );
+        } catch (\Exception $exception) {
+            return ExceptionHandleHelper::handleException($exception);
+        }
+    }
+
+    #[IsGranted(UserRoles::STUDENT)]
+    #[Route('/student/submission/{id}', name: 'student_submission', methods: ['PATCH'])]
+    public function update(
+        StudentSubmission $studentSubmission,
+        StudentSubmissionUpdateRequest $request,
+        StudentSubmissionUpdateDecoder $paramsDecoder,
+    ): JsonResponse {
+        try {
+            $user = $this->userService->getCurrentUser();
+            $params = $paramsDecoder->decode($request);
+            $files = $this->fileBagDecoder->decode($request->getFiles());
+
+            return new JsonResponse(
+                $this->studentSubmissionService->updateAction($studentSubmission, $params, $user, $files),
                 Response::HTTP_OK
             );
         } catch (\Exception $exception) {
