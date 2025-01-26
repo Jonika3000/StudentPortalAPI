@@ -40,6 +40,10 @@ class ExceptionHandleHelper
             'code' => ErrorCodes::MAIL_ERROR,
             'message' => 'Mail error occurred.',
         ],
+        \App\Shared\Response\Exception\AccessDeniedException::class => [
+            'code' => ErrorCodes::HOME_WORK_PERMISSION,
+            'message' => 'Access denied',
+        ],
     ];
 
     public static function handleException(\Exception $exception): JsonResponse

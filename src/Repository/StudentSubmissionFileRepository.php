@@ -16,28 +16,18 @@ class StudentSubmissionFileRepository extends ServiceEntityRepository
         parent::__construct($registry, StudentSubmissionFile::class);
     }
 
-    //    /**
-    //     * @return StudentSubmissionFile[] Returns an array of StudentSubmissionFile objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function saveAction(StudentSubmissionFile $studentSubmissionFile): void
+    {
+        $entityManager = $this->getEntityManager();
 
-    //    public function findOneBySomeField($value): ?StudentSubmissionFile
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        $entityManager->persist($studentSubmissionFile);
+        $entityManager->flush();
+    }
+
+    public function deleteAction(StudentSubmissionFile $studentSubmissionFile): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($studentSubmissionFile);
+        $entityManager->flush();
+    }
 }

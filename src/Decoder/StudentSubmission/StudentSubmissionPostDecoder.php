@@ -11,8 +11,7 @@ class StudentSubmissionPostDecoder
     {
         return new StudentSubmissionPostParams(
             $request->comment,
-            $request->homework,
-            $request->submittedDate
+            $request->homework
         );
     }
 }

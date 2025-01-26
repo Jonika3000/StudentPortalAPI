@@ -5,9 +5,9 @@ namespace App\Services;
 use App\Entity\Grade;
 use App\Entity\User;
 use App\Params\Grade\GradePostParams;
+use App\Params\Grade\GradeUpdateParams;
 use App\Repository\GradeRepository;
 use App\Repository\StudentSubmissionRepository;
-use App\Repository\TeacherRepository;
 use App\Shared\Response\Exception\Student\StudentSubmissionNotFound;
 use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;
 use App\Shared\Response\Exception\User\AccessDeniedException;
@@ -19,7 +19,7 @@ class GradeService extends AbstractController
     public function __construct(
         private readonly GradeRepository $gradeRepository,
         private readonly StudentSubmissionRepository $studentSubmissionRepository,
-        private readonly TeacherRepository $teacherRepository,
+        private readonly TeacherService $teacherService,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
@@ -36,10 +36,7 @@ class GradeService extends AbstractController
             throw new StudentSubmissionNotFound();
         }
 
-        $teacher = $this->teacherRepository->findOneBy(['associatedUser' => $user->getId()]);
-        if (!$teacher) {
-            throw new TeacherNotFoundException();
-        }
+        $teacher = $this->teacherService->getTeacherByAssociatedUser($user);
 
         if (!$this->authorizationChecker->isGranted('grade', $studentSubmission)) {
             throw new AccessDeniedException();
@@ -57,15 +54,27 @@ class GradeService extends AbstractController
     }
 
     /**
+     * @throws AccessDeniedException
+     */
+    public function updateAction(Grade $grade, GradeUpdateParams $params): void
+    {
+        if (!$this->authorizationChecker->isGranted('grade', $grade->getStudentSubmission())) {
+            throw new AccessDeniedException();
+        }
+
+        $grade->setGrade($params->grade)
+            ->setComment($params->comment);
+
+        $this->gradeRepository->saveGrade($grade);
+    }
+
+    /**
      * @throws TeacherNotFoundException
      * @throws AccessDeniedException
      */
     public function deleteAction(User $user, Grade $grade): void
     {
-        $teacher = $this->teacherRepository->findOneBy(['associatedUser' => $user->getId()]);
-        if (!$teacher) {
-            throw new TeacherNotFoundException();
-        }
+        $teacher = $this->teacherService->getTeacherByAssociatedUser($user);
 
         if ($teacher->getId() != $grade->getTeacher()->getId()) {
             throw new AccessDeniedException();

@@ -34,7 +34,7 @@ class FileHelper
         return $fullPath;
     }
 
-    public function deleteImage(string $path, bool $resizeImages): void
+    public function deleteFile(string $path, bool $resizeImages): void
     {
         $fullPath = $this->uploadDir.$path;
 

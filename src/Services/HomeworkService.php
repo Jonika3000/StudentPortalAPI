@@ -15,7 +15,6 @@ use App\Shared\Response\Exception\Lesson\LessonNotFound;
 use App\Shared\Response\Exception\Student\StudentNotFoundException;
 use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;
 use App\Shared\Response\Exception\User\AccessDeniedException;
-use App\Utils\FileHelper;
 
 readonly class HomeworkService
 {
@@ -23,7 +22,6 @@ readonly class HomeworkService
         private TeacherService $teacherService,
         private LessonRepository $lessonRepository,
         private HomeworkRepository $homeworkRepository,
-        private FileHelper $fileHelper,
         private StudentRepository $studentRepository,
         private HomeworkEncoder $homeworkEncoder,
         private HomeworkFileService $homeworkFileService,
@@ -125,7 +123,7 @@ readonly class HomeworkService
         $this->checkAccessHomeworkTeacherChange($homework, $user);
 
         foreach ($homework->getHomeworkFiles() as $homeworkFile) {
-            $this->fileHelper->deleteImage($homeworkFile->getPath(), false);
+            $this->homeworkFileService->removeHomeworkFile($homeworkFile);
         }
 
         $this->homeworkRepository->deleteAction($homework);
@@ -141,7 +139,7 @@ readonly class HomeworkService
 
         if ($files) {
             foreach ($homework->getHomeworkFiles() as $homeworkFile) {
-                $this->fileHelper->deleteImage($homeworkFile->getPath(), false);
+                $this->homeworkFileService->removeHomeworkFile($homeworkFile);
             }
 
             foreach ($files->files as $file) {
@@ -155,5 +153,15 @@ readonly class HomeworkService
         $this->homeworkRepository->saveAction($homework);
 
         return $homework;
+    }
+
+    public function isHomeworkBelongsToStudent(Homework $homework, User $student): bool
+    {
+        return $homework->getLesson()->getClassroom()->getStudents()->contains($student);
+    }
+
+    public function findHomeworkById(int $id): ?Homework
+    {
+        return $this->homeworkRepository->find($id);
     }
 }
