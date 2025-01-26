@@ -57,4 +57,20 @@ class StudentSubmissionController extends AbstractController
             return ExceptionHandleHelper::handleException($exception);
         }
     }
+
+    #[IsGranted(UserRoles::USER)]
+    #[Route('/student/submission/{id}', name: 'student_submission_delete', methods: ['GET'])]
+    public function get(StudentSubmission $studentSubmission): JsonResponse
+    {
+        try {
+            $user = $this->userService->getCurrentUser();
+
+            return new JsonResponse(
+                $this->studentSubmissionService->getAction($studentSubmission, $user),
+                Response::HTTP_OK
+            );
+        } catch (\Exception $exception) {
+            return ExceptionHandleHelper::handleException($exception);
+        }
+    }
 }

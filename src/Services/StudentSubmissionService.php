@@ -10,6 +10,7 @@ use App\Repository\StudentSubmissionRepository;
 use App\Shared\Response\Exception\AccessDeniedException;
 use App\Shared\Response\Exception\Homework\HomeworkPermissionException;
 use App\Shared\Response\Exception\Student\StudentNotFoundException;
+use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;
 
 readonly class StudentSubmissionService
 {
@@ -18,6 +19,7 @@ readonly class StudentSubmissionService
         private HomeworkService $homeworkService,
         private StudentService $studentService,
         private StudentSubmissionFileService $studentSubmissionFileService,
+        private TeacherService $teacherService,
     ) {
     }
 
@@ -66,6 +68,32 @@ readonly class StudentSubmissionService
 
         foreach ($studentSubmission->getStudentSubmissionFiles() as $studentSubmissionFile) {
             $this->studentSubmissionFileService->removeStudentSubmissionFile($studentSubmissionFile);
+        }
+    }
+
+    /**
+     * @throws AccessDeniedException
+     */
+    public function getByUser(StudentSubmission $studentSubmission, User $user): StudentSubmission
+    {
+        try {
+            $student = $this->studentService->getStudentByUser($user);
+            if ($studentSubmission->getStudent()->getId() !== $student->getId()) {
+                throw new AccessDeniedException();
+            }
+            return $studentSubmission;
+        } catch (StudentNotFoundException $e) {
+            try {
+                $teacher = $this->teacherService->getTeacherByAssociatedUser($user);
+
+                $homeworkLesson = $studentSubmission->getHomework()->getLesson();
+                if (!$teacher->getLesson()->contains($homeworkLesson)) {
+                    throw new AccessDeniedException();
+                }
+                return $studentSubmission;
+            } catch (TeacherNotFoundException $e) {
+                throw new AccessDeniedException();
+            }
         }
     }
 }
