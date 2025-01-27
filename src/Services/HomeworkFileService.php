@@ -29,8 +29,6 @@ readonly class HomeworkFileService
 
     public function removeHomeworkFile(HomeworkFile $homeworkFile): void
     {
-        $this->fileHelper->deleteFile($homeworkFile->getPath(), false);
-
         $this->homeworkFileRepository->deleteAction($homeworkFile);
     }
 }
