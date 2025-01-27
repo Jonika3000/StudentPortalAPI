@@ -31,6 +31,6 @@ readonly class StudentSubmissionFileService
     {
         $this->fileHelper->deleteFile($studentSubmissionFile->getPath(), false);
 
-        $this->studentSubmissionFileRepository->deleteAction($homeworkFile);
+        $this->studentSubmissionFileRepository->deleteAction($studentSubmissionFile);
     }
 }

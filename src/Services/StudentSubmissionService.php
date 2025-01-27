@@ -6,6 +6,7 @@ use App\Entity\StudentSubmission;
 use App\Entity\User;
 use App\Params\FilesParams\StudentSubmissionFilesParams;
 use App\Params\StudentSubmission\StudentSubmissionPostParams;
+use App\Params\StudentSubmission\StudentSubmissionUpdateParams;
 use App\Repository\StudentSubmissionRepository;
 use App\Shared\Response\Exception\AccessDeniedException;
 use App\Shared\Response\Exception\Homework\HomeworkPermissionException;
@@ -81,6 +82,7 @@ readonly class StudentSubmissionService
             if ($studentSubmission->getStudent()->getId() !== $student->getId()) {
                 throw new AccessDeniedException();
             }
+
             return $studentSubmission;
         } catch (StudentNotFoundException $e) {
             try {
@@ -90,10 +92,38 @@ readonly class StudentSubmissionService
                 if (!$teacher->getLesson()->contains($homeworkLesson)) {
                     throw new AccessDeniedException();
                 }
+
                 return $studentSubmission;
             } catch (TeacherNotFoundException $e) {
                 throw new AccessDeniedException();
             }
         }
+    }
+
+    /**
+     * @throws AccessDeniedException
+     * @throws StudentNotFoundException
+     */
+    public function updateAction(StudentSubmission $studentSubmission, StudentSubmissionUpdateParams $params, User $user, ?StudentSubmissionFilesParams $files = null): StudentSubmission
+    {
+        $student = $this->studentService->getStudentByUser($user);
+
+        if ($studentSubmission->getStudent()->getId() != $student->getId()) {
+            throw new AccessDeniedException();
+        }
+        $studentSubmission->setComment($params->comment);
+
+        $this->submissionRepository->saveAction($studentSubmission);
+
+        if ($files) {
+            foreach ($studentSubmission->getStudentSubmissionFiles() as $studentSubmissionFile) {
+                $this->studentSubmissionFileService->removeStudentSubmissionFile($studentSubmissionFile);
+            }
+            foreach ($files->files as $file) {
+                $this->studentSubmissionFileService->saveStudentSubmissionFile($file, $studentSubmission);
+            }
+        }
+
+        return $studentSubmission;
     }
 }
