@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Factory\ClassroomFactory;
+use App\Factory\HomeworkFactory;
 use App\Factory\LessonFactory;
 use App\Factory\StudentFactory;
 use App\Factory\SubjectFactory;
@@ -18,6 +19,7 @@ class AppFixtures extends Fixture
         private readonly ClassroomFactory $classroomFactory,
         private readonly LessonFactory $lessonFactory,
         private readonly SubjectFactory $subjectFactory,
+        private readonly HomeworkFactory $homeworkFactory,
     ) {
     }
 
@@ -26,6 +28,7 @@ class AppFixtures extends Fixture
         $teachers = [];
         $students = [];
         $classrooms = [];
+        $lessons = [];
 
         for ($i = 0; $i < 10; ++$i) {
             $teachers[] = $this->teacherFactory->create();
@@ -46,8 +49,13 @@ class AppFixtures extends Fixture
         foreach ($classrooms as $classroom) {
             foreach ($subjects as $subject) {
                 $teachersForLesson = array_slice($teachers, 0, 2);
-                $this->lessonFactory->create($classroom, $subject, $teachersForLesson);
+                $lesson = $this->lessonFactory->create($classroom, $subject, $teachersForLesson);
+                $lessons[] = $lesson;
             }
+        }
+
+        foreach ($lessons as $lesson) {
+            $this->homeworkFactory->create($lesson->getTeachers()[0], $lesson);
         }
 
         $manager->flush();
