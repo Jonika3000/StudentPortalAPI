@@ -6,11 +6,11 @@ use App\Constants\UserRoles;
 use App\Entity\Teacher;
 use Doctrine\ORM\EntityManagerInterface;
 
-class TeacherFactory
+readonly class TeacherFactory
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UserFactory            $userFactory,
+        private EntityManagerInterface $entityManager,
+        private UserFactory $userFactory,
     ) {
     }
 

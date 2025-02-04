@@ -7,11 +7,11 @@ use App\Entity\Student;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 
-class StudentFactory
+readonly class StudentFactory
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly UserFactory $userFactory,
+        private EntityManagerInterface $entityManager,
+        private UserFactory $userFactory,
     ) {
     }
 

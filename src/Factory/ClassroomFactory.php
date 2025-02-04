@@ -5,10 +5,10 @@ namespace App\Factory;
 use App\Entity\Classroom;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ClassroomFactory
+readonly class ClassroomFactory
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
