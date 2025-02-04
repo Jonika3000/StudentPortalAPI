@@ -11,8 +11,8 @@ class StudentFactory
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly UserFactory $userFactory)
-    {
+        private readonly UserFactory $userFactory,
+    ) {
     }
 
     public function create(): Student
