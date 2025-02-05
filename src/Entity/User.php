@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     private ?string $uuid = null;
 
     /**
@@ -41,34 +43,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     private ?string $secondName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotNull]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     #[Assert\Type(\DateTimeInterface::class)]
     private ?\DateTimeInterface $birthday = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     private ?string $avatarPath = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Email]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
     #[PhoneNumber]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(enumType: Gender::class)]
     #[Assert\NotBlank]
+    #[Groups(['user_read', 'student_read', 'teacher_read'])]
     private ?Gender $gender = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]

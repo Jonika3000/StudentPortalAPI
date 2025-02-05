@@ -43,13 +43,13 @@ readonly class StudentSubmissionService
         $studentSubmission->setComment($params->comment);
         $studentSubmission->setSubmittedDate(new \DateTime());
 
+        $this->submissionRepository->saveAction($studentSubmission);
+
         if ($files) {
             foreach ($files->files as $file) {
                 $this->studentSubmissionFileService->saveStudentSubmissionFile($file, $studentSubmission);
             }
         }
-
-        $this->submissionRepository->saveAction($studentSubmission);
 
         return $studentSubmission;
     }

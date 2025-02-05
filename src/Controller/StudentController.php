@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'api_')]
 class StudentController extends AbstractController
@@ -36,8 +37,9 @@ class StudentController extends AbstractController
 
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/student/{id}', name: 'student_get', methods: 'GET')]
-    public function find(Student $student): JsonResponse
+    public function find(Student $student, SerializerInterface $serializer): JsonResponse
     {
-        return new JsonResponse($student, Response::HTTP_OK);
+        $data = $serializer->serialize($student, 'json', ['groups' => 'student_read']);
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 }

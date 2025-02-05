@@ -53,13 +53,13 @@ readonly class HomeworkService
         $homework->setDescription($params->description);
         $homework->setDeadline($params->deadline);
 
-        if ($files) {
-            foreach ($files->files as $file) {
-                $this->homeworkFileService->saveHomeworkFile($file, $homework);
-            }
-        }
-
         $this->homeworkRepository->saveAction($homework);
+
+        if ($files) {
+            // foreach ($files->files as $file) {
+            $this->homeworkFileService->saveHomeworkFile($files->files, $homework);
+            // }
+        }
 
         return ['message' => 'Success.'];
     }
