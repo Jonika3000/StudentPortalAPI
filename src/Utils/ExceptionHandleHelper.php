@@ -58,6 +58,6 @@ class ExceptionHandleHelper
 
         $response = (new ResponseError())->setCode(ErrorCodes::UNEXPECTED_ERROR)->setMessage('An unexpected error occurred.');
 
-        return new JsonResponse($response, Response::HTTP_INTERNAL_SERVER_ERROR);
+        return new JsonResponse(json_decode($response->serializeToJsonString(), true), Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
