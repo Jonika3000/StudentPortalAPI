@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ClassroomRepository::class)]
@@ -18,6 +19,7 @@ class Classroom
     private ?int $id = null;
 
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['student_read'])]
     private ?Uuid $uuid = null;
 
     /**
@@ -30,6 +32,7 @@ class Classroom
      * @var Collection<int, Lesson>
      */
     #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'classroom')]
+    #[Groups(['student_read'])]
     private Collection $lessons;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
