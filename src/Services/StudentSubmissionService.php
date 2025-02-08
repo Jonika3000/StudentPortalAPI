@@ -84,7 +84,7 @@ readonly class StudentSubmissionService
             }
 
             return $studentSubmission;
-        } catch (StudentNotFoundException $e) {
+        } catch (StudentNotFoundException) {
             try {
                 $teacher = $this->teacherService->getTeacherByAssociatedUser($user);
 
@@ -94,7 +94,7 @@ readonly class StudentSubmissionService
                 }
 
                 return $studentSubmission;
-            } catch (TeacherNotFoundException $e) {
+            } catch (TeacherNotFoundException) {
                 throw new AccessDeniedException();
             }
         }

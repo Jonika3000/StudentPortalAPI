@@ -10,11 +10,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFactory
 {
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher)
     {
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function create(string $role): User

@@ -16,12 +16,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class TeacherAdmin extends AbstractAdmin
 {
-    private FileHelper $fileHelper;
-
-    public function __construct(FileHelper $fileHelper, private readonly UserPasswordHasherInterface $passwordHasher)
+    public function __construct(private readonly FileHelper $fileHelper, private readonly UserPasswordHasherInterface $passwordHasher)
     {
         parent::__construct();
-        $this->fileHelper = $fileHelper;
     }
 
     public function configureFormFields(FormMapper $form): void

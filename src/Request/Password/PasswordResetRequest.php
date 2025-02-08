@@ -8,8 +8,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class PasswordResetRequest extends BaseRequest
 {
     #[NotBlank]
-    public ?string $resetToken;
+    public ?string $resetToken = null;
 
     #[NotBlank]
-    public ?string $newPassword;
+    public ?string $newPassword = null;
 }

@@ -11,7 +11,7 @@ use Faker\Factory;
 class HomeworkFactory
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 

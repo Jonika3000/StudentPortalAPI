@@ -14,12 +14,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 final class SubjectAdmin extends AbstractAdmin
 {
-    private FileHelper $fileHelper;
-
-    public function __construct(FileHelper $fileHelper)
+    public function __construct(private readonly FileHelper $fileHelper)
     {
         parent::__construct();
-        $this->fileHelper = $fileHelper;
     }
 
     protected function configureFormFields(FormMapper $form): void

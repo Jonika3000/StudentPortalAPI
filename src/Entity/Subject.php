@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubjectRepository::class)]
-class Subject
+class Subject implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -118,8 +118,8 @@ class Subject
         return $this;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 }

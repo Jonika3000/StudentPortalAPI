@@ -18,7 +18,7 @@ class PhoneNumberValidator extends ConstraintValidator
 
         $pattern = '/^\+?[1-9]\d{1,14}$/';
 
-        if (!preg_match($pattern, $value)) {
+        if (!preg_match($pattern, (string) $value)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();

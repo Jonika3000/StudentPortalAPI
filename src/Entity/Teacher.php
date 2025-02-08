@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TeacherRepository::class)]
-class Teacher
+class Teacher implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -89,7 +89,7 @@ class Teacher
 
     public function __toString(): string
     {
-        return $this->getAssociatedUser()->getEmail();
+        return (string) $this->getAssociatedUser()->getEmail();
     }
 
     /**

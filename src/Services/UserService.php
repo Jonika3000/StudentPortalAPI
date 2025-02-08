@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\User;
 use App\Params\FilesParams\RegisterFilesParams;
 use App\Params\FilesParams\UserEditFilesParams;
@@ -58,7 +59,7 @@ readonly class UserService
         return $user;
     }
 
-    public function getUserByToken(TokenInterface $token): \Symfony\Component\Security\Core\User\UserInterface
+    public function getUserByToken(TokenInterface $token): UserInterface
     {
         return $token->getUser();
     }

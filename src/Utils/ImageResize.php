@@ -8,7 +8,7 @@ class ImageResize
 {
     public static function image_resize($width, $height, $path, UploadedFile $file)
     {
-        list($w, $h) = getimagesize($file->getPathname());
+        [$w, $h] = getimagesize($file->getPathname());
         $maxSize = max($width, $height);
 
         $ratioOrig = $w / $h;

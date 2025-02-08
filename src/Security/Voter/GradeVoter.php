@@ -12,7 +12,7 @@ final class GradeVoter extends Voter
 {
     public const GRADE = 'grade';
 
-    public function __construct(private TeacherRepository $teacherRepository)
+    public function __construct(private readonly TeacherRepository $teacherRepository)
     {
     }
 
