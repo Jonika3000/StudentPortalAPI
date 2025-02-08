@@ -11,6 +11,7 @@ use App\Request\Grade\GradeUpdateRequest;
 use App\Services\GradeService;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,24 @@ class GradeController extends AbstractController
     ) {
     }
 
+    #[OA\Post(
+        path: '/api/grade',
+        description: 'Assigns a grade to a student submission',
+        summary: 'Create a new grade',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: '#/components/schemas/GradePostRequest')
+        ),
+        tags: ['Grade'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(type: 'string', example: 'Success')
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/grade', name: 'grade_post', methods: ['POST'])]
     public function post(GradePostRequest $request, GradePostDecoder $decoder): JsonResponse
@@ -43,6 +62,32 @@ class GradeController extends AbstractController
         }
     }
 
+    #[OA\Patch(
+        path: '/api/grade/{id}',
+        description: 'Modifies an existing grade',
+        summary: 'Update an existing grade',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: '#/components/schemas/GradeUpdateRequest')
+        ),
+        tags: ['Grade'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(type: 'string', example: 'Success')
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/grade/{id}', name: 'grade_update', methods: ['PATCH'])]
     public function update(Grade $grade, GradeUpdateRequest $request, GradeUpdateDecoder $decoder): JsonResponse
@@ -58,6 +103,28 @@ class GradeController extends AbstractController
         }
     }
 
+    #[OA\Delete(
+        path: '/api/grade/{id}',
+        description: 'Removes a grade entry',
+        summary: 'Delete a grade',
+        security: [['bearerAuth' => []]],
+        tags: ['Grade'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(type: 'string', example: 'Success')
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/grade/{id}', name: 'grade_delete', methods: ['DELETE'])]
     public function remove(Grade $grade): JsonResponse

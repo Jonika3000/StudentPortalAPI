@@ -40,6 +40,27 @@ nelmio_api_doc:
                             description: "Invalid credentials"
         components:
             schemas:
+                GradePostRequest:
+                    type: object
+                    properties:
+                        grade:
+                            type: integer
+                        comment:
+                            type: string
+                        studentSubmission:
+                            type: integer
+                    required:
+                        - grade
+                        - studentSubmission
+                GradeUpdateRequest:
+                        type: object
+                        properties:
+                            grade:
+                                type: integer
+                            comment:
+                                type: string
+                        required:
+                            - grade
                 Classroom:
                     type: object
                     properties:
@@ -159,6 +180,47 @@ nelmio_api_doc:
                             type: string
                             format: date
                             example: "2000-05-10"
+                Grade:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        grade:
+                            type: integer
+                            example: 90
+                        teacher:
+                            type: string
+                            example: "Dr. Smith"
+                        comment:
+                            type: string
+                            nullable: true
+                            example: "Excellent work!"
+                        studentSubmission:
+                            $ref: "#/components/schemas/StudentSubmission"
+
+                StudentSubmission:
+                        type: object
+                        properties:
+                            id:
+                                type: integer
+                                example: 1
+                            submittedDate:
+                                type: string
+                                format: date-time
+                                example: "2025-02-08T14:00:00Z"
+                            comment:
+                                type: string
+                                nullable: true
+                                example: "My completed assignment."
+                            student:
+                                $ref: "#/components/schemas/Student"
+                            homework:
+                                type: string
+                                example: "Math Homework #5"
+                            grade:
+                                $ref: "#/components/schemas/Grade"
+
             securitySchemes:
                 Bearer:
                     type: http
