@@ -40,6 +40,47 @@ nelmio_api_doc:
                             description: "Invalid credentials"
         components:
             schemas:
+                UserEditRequest:
+                    type: object
+                    properties:
+                        data:
+                            type: object
+                            properties:
+                                address:
+                                    type: string
+                                    description: User's address
+                                    example: "123 Main Street, Springfield"
+                                phoneNumber:
+                                    type: string
+                                    description: User's phone number
+                                    example: "+1234567890"
+                        files:
+                            type: object
+                            properties:
+                                avatar:
+                                    type: string
+                                    format: binary
+                                    description: User profile image file
+                PasswordResetRequestRequest:
+                    type: object
+                    properties:
+                        email:
+                            type: string
+                            format: email
+                            description: The email address of the user requesting a password reset.
+                            example: john.doe@example.com
+
+                PasswordResetRequest:
+                    type: object
+                    properties:
+                        resetToken:
+                            type: string
+                            description: The reset token sent to the user's email.
+                            example: abc123def456
+                        newPassword:
+                            type: string
+                            description: The new password for the user.
+                            example: MyNewP@ssw0rd
                 RegisterRequest:
                     type: object
                     properties:
