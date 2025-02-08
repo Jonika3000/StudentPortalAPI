@@ -40,6 +40,62 @@ nelmio_api_doc:
                             description: "Invalid credentials"
         components:
             schemas:
+                RegisterRequest:
+                    type: object
+                    properties:
+                        data:
+                            type: object
+                            required:
+                                - password
+                                - firstName
+                                - secondName
+                                - birthday
+                                - email
+                                - address
+                                - phoneNumber
+                                - gender
+                            properties:
+                                password:
+                                    type: string
+                                    description: User's password
+                                firstName:
+                                    type: string
+                                    description: User's first name
+                                    example: John
+                                secondName:
+                                    type: string
+                                    description: User's second name
+                                    example: Doe
+                                birthday:
+                                    type: string
+                                    format: date
+                                    description: User's birthday in YYYY-MM-DD format
+                                    example: 1990-01-01
+                                email:
+                                    type: string
+                                    format: email
+                                    description: User's email address
+                                    example: john.doe@example.com
+                                address:
+                                    type: string
+                                    description: User's address
+                                    example: 123 Main Street, Springfield
+                                phoneNumber:
+                                    type: string
+                                    description: User's phone number
+                                    example: "+1234567890"
+                                gender:
+                                    type: string
+                                    description: User's gender
+                                    enum:
+                                        - male
+                                        - female
+                                        - other
+                                    example: male
+                        avatar:
+                            type: string
+                            format: binary
+                            description: User's avatar image file
                 StudentSubmissionPostRequest:
                     type: object
                     required:

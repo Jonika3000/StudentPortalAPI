@@ -185,7 +185,7 @@ class HomeworkController extends AbstractController
                 mediaType: 'multipart/form-data',
                 schema: new OA\Schema(ref: '#/components/schemas/HomeworkUpdateRequest'
                 )
-        )),
+            )),
         tags: ['Homework'],
         parameters: [
             new OA\Parameter(
