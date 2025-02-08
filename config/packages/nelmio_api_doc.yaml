@@ -54,13 +54,10 @@ nelmio_api_doc:
                                     type: string
                                     description: User's phone number
                                     example: "+1234567890"
-                        files:
-                            type: object
-                            properties:
-                                avatar:
-                                    type: string
-                                    format: binary
-                                    description: User profile image file
+                        avatar:
+                            type: string
+                            format: binary
+                            description: User's avatar image file
                 PasswordResetRequestRequest:
                     type: object
                     properties:
