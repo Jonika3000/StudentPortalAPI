@@ -7,6 +7,7 @@ use App\Entity\Student;
 use App\Services\StudentService;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,20 @@ class StudentController extends AbstractController
     ) {
     }
 
+    #[OA\Get(
+        path: '/api/student/me',
+        summary: "Get the authenticated student's details",
+        tags: ['Student'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Successful response',
+                content: new OA\JsonContent(ref: '#/components/schemas/Student')
+            ),
+            new OA\Response(response: 401, description: 'Unauthorized'),
+            new OA\Response(response: 404, description: 'Student not found'),
+        ]
+    )]
     #[Route('/student/me', name: 'student_me', methods: 'GET')]
     public function index(): JsonResponse
     {
@@ -35,11 +50,36 @@ class StudentController extends AbstractController
         }
     }
 
+    #[OA\Get(
+        path: '/api/student/{id}',
+        summary: 'Get student details by ID',
+        security: [['Bearer' => []]],
+        tags: ['Student'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Student ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Successful response',
+                content: new OA\JsonContent(ref: '#/components/schemas/Student')
+            ),
+            new OA\Response(response: 403, description: 'Forbidden - Requires TEACHER role'),
+            new OA\Response(response: 404, description: 'Student not found'),
+        ]
+    )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/student/{id}', name: 'student_get', methods: 'GET')]
     public function find(Student $student, SerializerInterface $serializer): JsonResponse
     {
         $data = $serializer->serialize($student, 'json', ['groups' => 'student_read']);
+
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 }
