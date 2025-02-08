@@ -22,5 +22,5 @@ class HomeworkUpdateRequest extends BaseRequest
     #[NotBlank]
     #[Groups('input')]
     #[Type(\DateTimeInterface::class)]
-    public ?\DateTimeInterface $deadline;
+    public ?\DateTimeInterface $deadline = null;
 }

@@ -2,6 +2,7 @@
 
 namespace App\Shared;
 
+use Symfony\Component\HttpFoundation\FileBag;
 use App\Shared\Response\ConstraintViolation;
 use App\Shared\Response\Exception\ValidatorException;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +63,7 @@ abstract class BaseRequest
         );
     }
 
-    public function getFiles(): \Symfony\Component\HttpFoundation\FileBag
+    public function getFiles(): FileBag
     {
         return $this->requestStack->getCurrentRequest()->files;
     }

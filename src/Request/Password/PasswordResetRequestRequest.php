@@ -10,5 +10,5 @@ class PasswordResetRequestRequest extends BaseRequest
 {
     #[NotBlank]
     #[Email]
-    public ?string $email;
+    public ?string $email = null;
 }

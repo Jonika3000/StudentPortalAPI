@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
-class Student
+class Student implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -82,6 +82,6 @@ class Student
 
     public function __toString(): string
     {
-        return $this->getAssociatedUser()->getEmail();
+        return (string) $this->getAssociatedUser()->getEmail();
     }
 }

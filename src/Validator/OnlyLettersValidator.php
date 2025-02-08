@@ -16,7 +16,7 @@ class OnlyLettersValidator extends ConstraintValidator
             return;
         }
 
-        if (!preg_match('/^\p{L}+$/u', $value)) {
+        if (!preg_match('/^\p{L}+$/u', (string) $value)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();

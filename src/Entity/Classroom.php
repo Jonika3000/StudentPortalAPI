@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ClassroomRepository::class)]
-class Classroom
+class Classroom implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -30,16 +30,16 @@ class RegisterRequest extends BaseRequest
     #[NotBlank]
     #[Groups('input')]
     #[Type(\DateTimeInterface::class)]
-    public ?\DateTimeInterface $birthday;
+    public ?\DateTimeInterface $birthday = null;
 
     #[NotBlank]
     #[Email]
     #[Groups('input')]
-    public ?string $email;
+    public ?string $email = null;
 
     #[NotBlank]
     #[Groups('input')]
-    public ?string $address;
+    public ?string $address = null;
 
     #[NotBlank]
     #[PhoneNumber]

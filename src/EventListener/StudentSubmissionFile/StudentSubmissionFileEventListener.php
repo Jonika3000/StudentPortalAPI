@@ -8,11 +8,8 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class StudentSubmissionFileEventListener
 {
-    private FileHelper $fileHelper;
-
-    public function __construct(FileHelper $fileHelper)
+    public function __construct(private readonly FileHelper $fileHelper)
     {
-        $this->fileHelper = $fileHelper;
     }
 
     public function preRemove(StudentSubmissionFile $studentSubmissionFile, LifecycleEventArgs $args): void

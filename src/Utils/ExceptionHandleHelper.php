@@ -46,9 +46,9 @@ class ExceptionHandleHelper
         ],
     ];
 
-    public static function handleException(\Exception $exception): JsonResponse
+    public static function handleException(\Throwable $exception): JsonResponse
     {
-        $error = ExceptionHandleHelper::$errorMapping[get_class($exception)] ?? null;
+        $error = ExceptionHandleHelper::$errorMapping[$exception::class] ?? null;
 
         if ($error) {
             $response = (new ResponseError())->setCode($error['code'])->setMessage($error['message']);

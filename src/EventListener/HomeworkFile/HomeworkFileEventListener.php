@@ -11,11 +11,8 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 #[AsEntityListener(event: Events::preRemove, method: 'preRemove', entity: HomeworkFile::class)]
 class HomeworkFileEventListener
 {
-    private FileHelper $fileHelper;
-
-    public function __construct(FileHelper $fileHelper)
+    public function __construct(private readonly FileHelper $fileHelper)
     {
-        $this->fileHelper = $fileHelper;
     }
 
     public function preRemove(HomeworkFile $homeworkFile, LifecycleEventArgs $args): void

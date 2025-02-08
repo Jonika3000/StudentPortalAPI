@@ -2,6 +2,9 @@
 
 namespace App\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+use App\Entity\Student;
+use App\Entity\Teacher;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -47,20 +50,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $entityManager->flush();
     }
 
-    public function getFilteredUsersQuery(): \Doctrine\ORM\QueryBuilder
+    public function getFilteredUsersQuery(): QueryBuilder
     {
         $entityManager = $this->getEntityManager();
         $subqueryStudent = $entityManager->createQueryBuilder()
             ->select('IDENTITY(s.associatedUser)')
-            ->from('App\Entity\Student', 's');
+            ->from(Student::class, 's');
 
         $subqueryTeacher = $entityManager->createQueryBuilder()
             ->select('IDENTITY(t.associatedUser)')
-            ->from('App\Entity\Teacher', 't');
+            ->from(Teacher::class, 't');
 
         $qb = $entityManager->createQueryBuilder();
         $qb->select('u')
-            ->from('App\Entity\User', 'u')
+            ->from(User::class, 'u')
             ->where(
                 $qb->expr()->notIn('u.id', $subqueryStudent->getDQL())
             )
