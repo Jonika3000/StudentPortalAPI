@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Services\LessonService;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,22 @@ class LessonController extends AbstractController
     ) {
     }
 
+    #[OA\Get(
+        path: '/api/lesson',
+        description: 'Retrieves a list of lessons assigned to the authenticated student.',
+        summary: 'Get lessons by student',
+        security: [['bearerAuth' => []]],
+        tags: ['Lesson'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Successful retrieval of lessons',
+                content: new OA\JsonContent(type: 'array', items: new OA\Items(ref: '#/components/schemas/Lesson'))
+            ),
+            new OA\Response(response: 401, description: 'Unauthorized'),
+            new OA\Response(response: 500, description: 'Server error'),
+        ]
+    )]
     #[Route('/lesson', name: 'lesson')]
     public function getByStudent(): JsonResponse
     {

@@ -40,6 +40,51 @@ nelmio_api_doc:
                             description: "Invalid credentials"
         components:
             schemas:
+                StudentSubmissionPostRequest:
+                    type: object
+                    required:
+                        - data
+                        - files
+                    properties:
+                        data:
+                            type: object
+                            required:
+                                - comment
+                                - homework
+                            properties:
+                                comment:
+                                    type: string
+                                    maxLength: 500
+                                    example: "My submission for math homework #5."
+                                homework:
+                                    type: integer
+                                    example: 15
+                        files:
+                            type: array
+                            items:
+                                type: string
+                                format: binary
+
+                StudentSubmissionUpdateRequest:
+                        type: object
+                        required:
+                            - data
+                            - files
+                        properties:
+                            data:
+                                type: object
+                                required:
+                                    - comment
+                                properties:
+                                    comment:
+                                        type: string
+                                        maxLength: 500
+                                        example: "Updated submission with corrections."
+                            files:
+                                type: array
+                                items:
+                                    type: string
+                                    format: binary
                 HomeworkPostRequest:
                     type: object
                     required:
