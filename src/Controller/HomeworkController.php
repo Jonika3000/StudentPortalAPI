@@ -12,6 +12,7 @@ use App\Request\Homework\HomeworkUpdateRequest;
 use App\Services\HomeworkService;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,27 @@ class HomeworkController extends AbstractController
     ) {
     }
 
+    #[OA\Post(
+        path: '/api/homework',
+        description: 'Creates a new homework assignment',
+        summary: 'Create a new homework',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/HomeworkPostRequest')
+            )
+        ),
+        tags: ['Homework'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(type: 'string', example: 'Success')
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/homework', name: 'homework', methods: ['POST'])]
     public function store(HomeworkPostRequest $request, HomeworkPostDecoder $paramsDecoder): JsonResponse
@@ -43,6 +65,28 @@ class HomeworkController extends AbstractController
         }
     }
 
+    #[OA\Get(
+        path: '/api/homework/{id}',
+        description: 'Retrieve a specific homework entry, accessible by teachers',
+        summary: 'Get homework details (Teacher)',
+        security: [['bearerAuth' => []]],
+        tags: ['Homework'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Homework')
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/homework/{id}', name: 'homework_get_by_id_teacher', methods: ['GET'])]
     public function viewTeacher(Homework $homework): JsonResponse
@@ -57,20 +101,65 @@ class HomeworkController extends AbstractController
         }
     }
 
-    #[IsGranted(UserRoles::STUDENT)]
-    #[Route('/homework/{id}', name: 'homework_get_by_id_student', methods: ['GET'])]
-    public function viewStudent(Homework $homework): JsonResponse
-    {
-        try {
-            $user = $this->userService->getCurrentUser();
-            $response = $this->homeworkService->getHomeworkStudent($homework, $user);
+    // @TODO: FIX DOUBLE ROUTS
+    //    #[OA\Get(
+    //        path: '/api/homework/{id}',
+    //        description: 'Retrieve a specific homework entry, accessible by students',
+    //        summary: 'Get homework details (Student)',
+    //        security: [['bearerAuth' => []]],
+    //        tags: ['Homework'],
+    //        parameters: [
+    //            new OA\Parameter(
+    //                name: 'id',
+    //                in: 'path',
+    //                required: true,
+    //                schema: new OA\Schema(type: 'integer')
+    //            ),
+    //        ],
+    //        responses: [
+    //            new OA\Response(
+    //                response: 200,
+    //                description: 'Success',
+    //                content: new OA\JsonContent(ref: '#/components/schemas/Homework')
+    //            ),
+    //        ]
+    //    )]
+    //    #[IsGranted(UserRoles::STUDENT)]
+    //    #[Route('/homework/{id}', name: 'homework_get_by_id_student', methods: ['GET'])]
+    //    public function viewStudent(Homework $homework): JsonResponse
+    //    {
+    //        try {
+    //            $user = $this->userService->getCurrentUser();
+    //            $response = $this->homeworkService->getHomeworkStudent($homework, $user);
+    //
+    //            return new JsonResponse($response, Response::HTTP_OK);
+    //        } catch (\Exception $exception) {
+    //            return ExceptionHandleHelper::handleException($exception);
+    //        }
+    //    }
 
-            return new JsonResponse($response, Response::HTTP_OK);
-        } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
-        }
-    }
-
+    #[OA\Delete(
+        path: '/api/homework/{id}',
+        description: 'Deletes a homework entry, accessible by teachers',
+        summary: 'Delete a homework entry',
+        security: [['bearerAuth' => []]],
+        tags: ['Homework'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(type: 'string', example: 'Success')
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/homework/{id}', name: 'homework_delete', methods: ['DELETE'])]
     public function remove(Homework $homework): JsonResponse
@@ -85,6 +174,35 @@ class HomeworkController extends AbstractController
         }
     }
 
+    #[OA\Patch(
+        path: '/api/homework/{id}',
+        description: 'Updates a homework entry, accessible by teachers',
+        summary: 'Update a homework entry',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/HomeworkUpdateRequest'
+                )
+            )),
+        tags: ['Homework'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/Homework')
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/homework/{id}', name: 'homework_update', methods: ['PATCH'])]
     public function update(Homework $homework, HomeworkUpdateRequest $request, HomeworkUpdateDecoder $homeworkUpdateDecoder): JsonResponse

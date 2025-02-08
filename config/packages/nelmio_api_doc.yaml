@@ -1,9 +1,427 @@
 nelmio_api_doc:
     documentation:
+        openapi: 3.0.0
         info:
-            title: My App
-            description: This is an awesome app!
+            title: Student Portal API
+            description: This is an awesome portal!
             version: 1.0.0
-    areas: # to filter documented areas
+        paths:
+            /api/login:
+                post:
+                    tags:
+                        - Authentication
+                    summary: "Authenticate a user and return a JWT token"
+                    requestBody:
+                        required: true
+                        content:
+                            application/json:
+                                schema:
+                                    type: object
+                                    properties:
+                                        username:
+                                            type: string
+                                            example: "johndoe@example.com"
+                                        password:
+                                            type: string
+                                            format: password
+                                            example: "P@ssw0rd!"
+                    responses:
+                        "200":
+                            description: "Successful login"
+                            content:
+                                application/json:
+                                    schema:
+                                        type: object
+                                        properties:
+                                            token:
+                                                type: string
+                                                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        "401":
+                            description: "Invalid credentials"
+        components:
+            schemas:
+                UserEditRequest:
+                    type: object
+                    properties:
+                        data:
+                            type: object
+                            properties:
+                                address:
+                                    type: string
+                                    description: User's address
+                                    example: "123 Main Street, Springfield"
+                                phoneNumber:
+                                    type: string
+                                    description: User's phone number
+                                    example: "+1234567890"
+                        avatar:
+                            type: string
+                            format: binary
+                            description: User's avatar image file
+                PasswordResetRequestRequest:
+                    type: object
+                    properties:
+                        email:
+                            type: string
+                            format: email
+                            description: The email address of the user requesting a password reset.
+                            example: john.doe@example.com
+
+                PasswordResetRequest:
+                    type: object
+                    properties:
+                        resetToken:
+                            type: string
+                            description: The reset token sent to the user's email.
+                            example: abc123def456
+                        newPassword:
+                            type: string
+                            description: The new password for the user.
+                            example: MyNewP@ssw0rd
+                RegisterRequest:
+                    type: object
+                    properties:
+                        data:
+                            type: object
+                            required:
+                                - password
+                                - firstName
+                                - secondName
+                                - birthday
+                                - email
+                                - address
+                                - phoneNumber
+                                - gender
+                            properties:
+                                password:
+                                    type: string
+                                    description: User's password
+                                firstName:
+                                    type: string
+                                    description: User's first name
+                                    example: John
+                                secondName:
+                                    type: string
+                                    description: User's second name
+                                    example: Doe
+                                birthday:
+                                    type: string
+                                    format: date
+                                    description: User's birthday in YYYY-MM-DD format
+                                    example: 1990-01-01
+                                email:
+                                    type: string
+                                    format: email
+                                    description: User's email address
+                                    example: john.doe@example.com
+                                address:
+                                    type: string
+                                    description: User's address
+                                    example: 123 Main Street, Springfield
+                                phoneNumber:
+                                    type: string
+                                    description: User's phone number
+                                    example: "+1234567890"
+                                gender:
+                                    type: string
+                                    description: User's gender
+                                    enum:
+                                        - male
+                                        - female
+                                        - other
+                                    example: male
+                        avatar:
+                            type: string
+                            format: binary
+                            description: User's avatar image file
+                StudentSubmissionPostRequest:
+                    type: object
+                    required:
+                        - data
+                        - files
+                    properties:
+                        data:
+                            type: object
+                            required:
+                                - comment
+                                - homework
+                            properties:
+                                comment:
+                                    type: string
+                                    maxLength: 500
+                                    example: "My submission for math homework #5."
+                                homework:
+                                    type: integer
+                                    example: 15
+                        files:
+                            type: array
+                            items:
+                                type: string
+                                format: binary
+
+                StudentSubmissionUpdateRequest:
+                        type: object
+                        required:
+                            - data
+                            - files
+                        properties:
+                            data:
+                                type: object
+                                required:
+                                    - comment
+                                properties:
+                                    comment:
+                                        type: string
+                                        maxLength: 500
+                                        example: "Updated submission with corrections."
+                            files:
+                                type: array
+                                items:
+                                    type: string
+                                    format: binary
+                HomeworkPostRequest:
+                    type: object
+                    required:
+                        - data
+                        - files
+                    properties:
+                        data:
+                            type: object
+                            required:
+                                - description
+                                - lesson
+                                - deadline
+                            properties:
+                                description:
+                                    type: string
+                                    maxLength: 255
+                                    example: "Complete exercises 1-10 from Chapter 3"
+                                lesson:
+                                    type: integer
+                                    example: 101
+                                deadline:
+                                    type: string
+                                    format: date-time
+                                    example: "2025-03-01T23:59:59Z"
+                        files:
+                            type: array
+                            items:
+                                type: string
+                                format: binary
+
+                HomeworkUpdateRequest:
+                    type: object
+                    required:
+                        - data
+                        - files
+                    properties:
+                        data:
+                            type: object
+                            required:
+                                - description
+                                - deadline
+                            properties:
+                                description:
+                                    type: string
+                                    maxLength: 255
+                                    example: "Revise the exercises and solve additional problems"
+                                deadline:
+                                    type: string
+                                    format: date-time
+                                    example: "2025-03-05T23:59:59Z"
+                        files:
+                            type: array
+                            items:
+                                type: string
+                                format: binary
+                GradePostRequest:
+                    type: object
+                    properties:
+                        grade:
+                            type: integer
+                        comment:
+                            type: string
+                        studentSubmission:
+                            type: integer
+                    required:
+                        - grade
+                        - studentSubmission
+                GradeUpdateRequest:
+                        type: object
+                        properties:
+                            grade:
+                                type: integer
+                            comment:
+                                type: string
+                        required:
+                            - grade
+                Classroom:
+                    type: object
+                    properties:
+                        uuid:
+                            type: string
+                            format: uuid
+                            example: "550e8400-e29b-41d4-a716-446655440000"
+                        createdAt:
+                            type: string
+                            format: date-time
+                            example: "2025-02-08T14:00:00Z"
+                        students:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/Student"
+                        lessons:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/Lesson"
+
+                Lesson:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 101
+                        subject:
+                            type: string
+                            example: "Mathematics"
+                        teachers:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/Teacher"
+                        homework:
+                            $ref: "#/components/schemas/Homework"
+
+                Homework:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        description:
+                            type: string
+                            example: "Complete the assignment on algebra"
+                        deadline:
+                            type: string
+                            format: date-time
+                            example: "2025-03-01T23:59:59Z"
+                        teacher:
+                            $ref: "#/components/schemas/Teacher"
+                        lesson:
+                            $ref: "#/components/schemas/Lesson"
+
+                Student:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        associatedUser:
+                            $ref: "#/components/schemas/User"
+                        contactParent:
+                            type: string
+                            nullable: true
+                            example: "John's Father"
+                        classroom:
+                            $ref: "#/components/schemas/Classroom"
+
+                Teacher:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 10
+                        name:
+                            type: string
+                            example: "Dr. Smith"
+                        email:
+                            type: string
+                            format: email
+                            example: "dr.smith@example.com"
+
+                Subject:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 5
+                        name:
+                            type: string
+                            example: "Mathematics"
+                        description:
+                            type: string
+                            example: "Study of numbers and equations"
+                        imagePath:
+                            type: string
+                            example: "/images/math.png"
+
+                User:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        uuid:
+                            type: string
+                            format: uuid
+                            example: "550e8400-e29b-41d4-a716-446655440000"
+                        firstName:
+                            type: string
+                            example: "John"
+                        secondName:
+                            type: string
+                            example: "Doe"
+                        birthday:
+                            type: string
+                            format: date
+                            example: "2000-05-10"
+                Grade:
+                    type: object
+                    properties:
+                        id:
+                            type: integer
+                            example: 1
+                        grade:
+                            type: integer
+                            example: 90
+                        teacher:
+                            type: string
+                            example: "Dr. Smith"
+                        comment:
+                            type: string
+                            nullable: true
+                            example: "Excellent work!"
+                        studentSubmission:
+                            $ref: "#/components/schemas/StudentSubmission"
+
+                StudentSubmission:
+                        type: object
+                        properties:
+                            id:
+                                type: integer
+                                example: 1
+                            submittedDate:
+                                type: string
+                                format: date-time
+                                example: "2025-02-08T14:00:00Z"
+                            comment:
+                                type: string
+                                nullable: true
+                                example: "My completed assignment."
+                            student:
+                                $ref: "#/components/schemas/Student"
+                            homework:
+                                type: string
+                                example: "Math Homework #5"
+                            grade:
+                                $ref: "#/components/schemas/Grade"
+
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+        security:
+            - Bearer: []
+    areas:
         path_patterns:
-            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+            - ^/api(?!/doc$)

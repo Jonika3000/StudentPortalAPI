@@ -12,6 +12,7 @@ use App\Request\StudentSubmission\StudentSubmissionUpdateRequest;
 use App\Services\StudentSubmissionService;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +29,37 @@ class StudentSubmissionController extends AbstractController
     ) {
     }
 
+    #[OA\Post(
+        path: '/api/student/submission',
+        description: 'Create a new student submission',
+        summary: 'Create a student submission',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/StudentSubmissionPostRequest')
+            )
+        ),
+        tags: ['Student Submission'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StudentSubmission', type: 'object')
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Validation error',
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Unauthorized',
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::STUDENT)]
-    #[Route('/student/submission', name: 'student_submission', methods: ['POST'])]
+    #[Route('/student/submission', name: 'student_submission_post', methods: ['POST'])]
     public function store(StudentSubmissionPostRequest $request, StudentSubmissionPostDecoder $paramsDecoder): JsonResponse
     {
         try {
@@ -46,6 +76,33 @@ class StudentSubmissionController extends AbstractController
         }
     }
 
+    #[OA\Delete(
+        path: '/api/student/submission/{id}',
+        description: 'Delete a student submission',
+        summary: 'Delete a submission',
+        security: [['bearerAuth' => []]],
+        tags: ['Student Submission'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'The ID of the submission',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(type: 'string', example: 'Success')
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Submission not found',
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::STUDENT)]
     #[Route('/student/submission/{id}', name: 'student_submission_delete', methods: ['DELETE'])]
     public function delete(StudentSubmission $studentSubmission): JsonResponse
@@ -60,8 +117,35 @@ class StudentSubmissionController extends AbstractController
         }
     }
 
+    #[OA\Get(
+        path: '/api/student/submission/{id}',
+        description: 'Get a student submission',
+        summary: 'Get submission details',
+        security: [['bearerAuth' => []]],
+        tags: ['Student Submission'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'The ID of the submission',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StudentSubmission', type: 'object')
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Submission not found',
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::USER)]
-    #[Route('/student/submission/{id}', name: 'student_submission_delete', methods: ['GET'])]
+    #[Route('/student/submission/{id}', name: 'student_submission_get', methods: ['GET'])]
     public function get(StudentSubmission $studentSubmission): JsonResponse
     {
         try {
@@ -76,8 +160,46 @@ class StudentSubmissionController extends AbstractController
         }
     }
 
+    #[OA\Patch(
+        path: '/api/student/submission/{id}',
+        description: 'Update a student submission',
+        summary: 'Update a submission',
+        security: [['bearerAuth' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/StudentSubmissionUpdateRequest')
+            )
+        ),
+        tags: ['Student Submission'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'The ID of the submission',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success',
+                content: new OA\JsonContent(ref: '#/components/schemas/StudentSubmission', type: 'object')
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Validation error',
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Submission not found',
+            ),
+        ]
+    )]
     #[IsGranted(UserRoles::STUDENT)]
-    #[Route('/student/submission/{id}', name: 'student_submission', methods: ['PATCH'])]
+    #[Route('/student/submission/{id}', name: 'student_submission_update', methods: ['PATCH'])]
     public function update(
         StudentSubmission $studentSubmission,
         StudentSubmissionUpdateRequest $request,
