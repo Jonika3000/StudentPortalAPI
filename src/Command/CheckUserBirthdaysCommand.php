@@ -41,7 +41,7 @@ class CheckUserBirthdaysCommand extends Command
                 $this->mailerService->sendMail(
                     $user->getEmail(),
                     'Happy Birthday!',
-                    'email/password/password_reset_success_email.html.twig'
+                    'email/user/birthday_email.html.twig'
                 );
             } catch (TransportExceptionInterface $e) {
                 $this->logger->error('Failed to send birthday email to '.$user->getEmail(), [
