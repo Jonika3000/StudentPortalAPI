@@ -151,7 +151,7 @@ readonly class UserService
         }
 
         if ($files) {
-            $this->fileHelper->deleteImage($user->getAvatarPath(), true);
+            $this->fileHelper->deleteFile($user->getAvatarPath(), true);
 
             $avatarPath = $this->fileHelper->uploadFile($files->avatar, '/images/avatars/', true);
             $user->setAvatarPath($avatarPath);

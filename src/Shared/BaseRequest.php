@@ -2,9 +2,9 @@
 
 namespace App\Shared;
 
-use Symfony\Component\HttpFoundation\FileBag;
 use App\Shared\Response\ConstraintViolation;
 use App\Shared\Response\Exception\ValidatorException;
+use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -54,9 +54,14 @@ abstract class BaseRequest
     {
         $request = $this->requestStack->getCurrentRequest();
         Assert::notNull($request);
+        $requestData = $request->request->all()['data'] ?? null;
+
+        if (null === $requestData) {
+            throw new \InvalidArgumentException("Missing 'data' field in request.");
+        }
 
         $this->serializer->deserialize(
-            $request->request->all()['data'],
+            $requestData,
             static::class,
             'json',
             ['object_to_populate' => $this]
