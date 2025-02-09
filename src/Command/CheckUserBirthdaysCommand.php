@@ -45,7 +45,8 @@ class CheckUserBirthdaysCommand extends Command
                 );
             } catch (TransportExceptionInterface $e) {
                 $this->logger->error('Failed to send birthday email to '.$user->getEmail(), [
-                    'exception' => $e->getMessage(),
+                    'error' => $e->getMessage(),
+                    'exception' => $e,
                 ]);
             }
             $output->writeln('Birthday email sent to: '.$user->getEmail());
