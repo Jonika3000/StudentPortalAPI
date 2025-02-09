@@ -2,11 +2,11 @@
 
 namespace App\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use App\Entity\Student;
 use App\Entity\Teacher;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -41,6 +41,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $entityManager = $this->getEntityManager();
         $entityManager->persist($user);
         $entityManager->flush();
+    }
+
+    public function findUsersByBirthday(\DateTime $date): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('MONTH(u.birthday) = :month')
+            ->andWhere('DAY(u.birthday) = :day')
+            ->setParameter('month', $date->format('m'))
+            ->setParameter('day', $date->format('d'))
+            ->getQuery()
+            ->getResult();
     }
 
     public function updateUser(User $user): void
