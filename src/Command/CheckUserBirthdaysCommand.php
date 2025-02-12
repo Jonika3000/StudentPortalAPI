@@ -49,6 +49,7 @@ class CheckUserBirthdaysCommand extends Command
                     'exception' => $e,
                 ]);
             }
+            //TODO: change output to logger
             $output->writeln('Birthday email sent to: '.$user->getEmail());
         }
 
