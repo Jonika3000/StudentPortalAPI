@@ -67,8 +67,8 @@ class HomeworkController extends AbstractController
 
     #[OA\Get(
         path: '/api/homework/{id}',
-        description: 'Retrieve a specific homework entry, accessible by teachers',
-        summary: 'Get homework details (Teacher)',
+        description: 'Retrieve a specific homework entry',
+        summary: 'Get homework details',
         security: [['bearerAuth' => []]],
         tags: ['Homework'],
         parameters: [
@@ -87,56 +87,24 @@ class HomeworkController extends AbstractController
             ),
         ]
     )]
-    #[IsGranted(UserRoles::TEACHER)]
-    #[Route('/homework/{id}', name: 'homework_get_by_id_teacher', methods: ['GET'])]
-    public function viewTeacher(Homework $homework): JsonResponse
+    #[Route('/homework/{id}', name: 'homework_get_by_id', methods: ['GET'])]
+    public function get(Homework $homework): JsonResponse
     {
         try {
             $user = $this->userService->getCurrentUser();
-            $this->homeworkService->checkAccessHomeworkTeacher($homework, $user);
+
+            if (in_array(UserRoles::TEACHER, $user->getRoles(), true)) {
+                $this->homeworkService->checkAccessHomeworkTeacher($homework, $user);
+            }
+            if (in_array(UserRoles::STUDENT, $user->getRoles(), true)) {
+                $this->homeworkService->getHomeworkStudent($homework, $user);
+            }
 
             return new JsonResponse($homework, Response::HTTP_OK);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
     }
-
-    // @TODO: FIX DOUBLE ROUTS
-    //    #[OA\Get(
-    //        path: '/api/homework/{id}',
-    //        description: 'Retrieve a specific homework entry, accessible by students',
-    //        summary: 'Get homework details (Student)',
-    //        security: [['bearerAuth' => []]],
-    //        tags: ['Homework'],
-    //        parameters: [
-    //            new OA\Parameter(
-    //                name: 'id',
-    //                in: 'path',
-    //                required: true,
-    //                schema: new OA\Schema(type: 'integer')
-    //            ),
-    //        ],
-    //        responses: [
-    //            new OA\Response(
-    //                response: 200,
-    //                description: 'Success',
-    //                content: new OA\JsonContent(ref: '#/components/schemas/Homework')
-    //            ),
-    //        ]
-    //    )]
-    //    #[IsGranted(UserRoles::STUDENT)]
-    //    #[Route('/homework/{id}', name: 'homework_get_by_id_student', methods: ['GET'])]
-    //    public function viewStudent(Homework $homework): JsonResponse
-    //    {
-    //        try {
-    //            $user = $this->userService->getCurrentUser();
-    //            $response = $this->homeworkService->getHomeworkStudent($homework, $user);
-    //
-    //            return new JsonResponse($response, Response::HTTP_OK);
-    //        } catch (\Exception $exception) {
-    //            return ExceptionHandleHelper::handleException($exception);
-    //        }
-    //    }
 
     #[OA\Delete(
         path: '/api/homework/{id}',
