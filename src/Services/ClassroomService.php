@@ -10,5 +10,4 @@ readonly class ClassroomService
         private StudentRepository $studentRepository,
     ) {
     }
-
 }

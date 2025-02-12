@@ -11,10 +11,9 @@ use App\Repository\StudentSubmissionRepository;
 use App\Shared\Response\Exception\Student\StudentSubmissionNotFound;
 use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;
 use App\Shared\Response\Exception\User\AccessDeniedException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class GradeService extends AbstractController
+class GradeService
 {
     public function __construct(
         private readonly GradeRepository $gradeRepository,
