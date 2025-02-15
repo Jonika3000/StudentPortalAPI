@@ -36,7 +36,7 @@ class LessonController extends AbstractController
             new OA\Response(response: 500, description: 'Server error'),
         ]
     )]
-    #[Route('/lesson', name: 'lesson')]
+    #[Route('/lesson', name: 'lesson', methods: ['GET'])]
     public function getByStudent(): JsonResponse
     {
         try {
