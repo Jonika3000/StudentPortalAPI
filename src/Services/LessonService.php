@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\User;
 use App\Repository\StudentRepository;
+use App\Shared\Response\Exception\Student\StudentNotFoundException;
 use Doctrine\Common\Collections\Collection;
 
 readonly class LessonService
@@ -13,9 +14,16 @@ readonly class LessonService
     ) {
     }
 
+    /**
+     * @throws StudentNotFoundException
+     */
     public function getLessonsByStudent(User $user): Collection
     {
         $student = $this->studentRepository->findOneBy(['associatedUser' => $user->getId()]);
+
+        if (!$student) {
+            throw new StudentNotFoundException();
+        }
 
         $classroom = $student->getClassroom();
 
