@@ -4,7 +4,7 @@ namespace App\Factory;
 
 use App\Constants\UserRoles;
 use App\Entity\User;
-use App\Enums\Gender;
+use App\Enum\Gender;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 

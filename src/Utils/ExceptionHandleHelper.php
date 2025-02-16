@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Constants\ErrorCodes;
+use App\Shared\Response\Exception\Homework\HomeworkPermissionException;
 use App\Shared\Response\Exception\Student\StudentNotFoundException;
 use App\Shared\Response\Exception\Student\StudentSubmissionNotFound;
 use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;
@@ -40,6 +41,10 @@ class ExceptionHandleHelper
             'code' => ErrorCodes::MAIL_ERROR,
             'message' => 'Mail error occurred.',
         ],
+        HomeworkPermissionException::class => [
+            'code' => ErrorCodes::MAIL_ERROR,
+            'message' => 'Homework doesn\'t belong to you',
+        ],
         \App\Shared\Response\Exception\AccessDeniedException::class => [
             'code' => ErrorCodes::HOME_WORK_PERMISSION,
             'message' => 'Access denied',
@@ -49,6 +54,15 @@ class ExceptionHandleHelper
     public static function handleException(\Throwable $exception): JsonResponse
     {
         $error = ExceptionHandleHelper::$errorMapping[$exception::class] ?? null;
+
+        if ('dev' === $_ENV['APP_ENV']) {
+            return new JsonResponse([
+                'error' => empty($exception->getMessage()) ? ($error['message'] ?? '') : $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => $exception->getTrace(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         if ($error) {
             $response = (new ResponseError())->setCode($error['code'])->setMessage($error['message']);

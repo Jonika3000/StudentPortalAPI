@@ -2,11 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Student;
-use App\Entity\Teacher;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -15,7 +12,6 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 /**
  * @extends ServiceEntityRepository<User>
  */
-// TODO: RENAME METHODS
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
@@ -37,7 +33,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function saveUser(User $user): void
+    public function saveAction(User $user): void
     {
         $entityManager = $this->getEntityManager();
         $entityManager->persist($user);
@@ -55,34 +51,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
-    public function updateUser(User $user): void
+    public function updateAction(User $user): void
     {
         $entityManager = $this->getEntityManager();
         $entityManager->persist($user);
         $entityManager->flush();
-    }
-
-    public function getFilteredUsersQuery(): QueryBuilder
-    {
-        $entityManager = $this->getEntityManager();
-        $subqueryStudent = $entityManager->createQueryBuilder()
-            ->select('IDENTITY(s.associatedUser)')
-            ->from(Student::class, 's');
-
-        $subqueryTeacher = $entityManager->createQueryBuilder()
-            ->select('IDENTITY(t.associatedUser)')
-            ->from(Teacher::class, 't');
-
-        $qb = $entityManager->createQueryBuilder();
-        $qb->select('u')
-            ->from(User::class, 'u')
-            ->where(
-                $qb->expr()->notIn('u.id', $subqueryStudent->getDQL())
-            )
-            ->andWhere(
-                $qb->expr()->notIn('u.id', $subqueryTeacher->getDQL())
-            );
-
-        return $qb;
     }
 }

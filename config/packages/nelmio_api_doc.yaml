@@ -106,7 +106,6 @@ nelmio_api_doc:
                                     example: Doe
                                 birthday:
                                     type: string
-                                    format: date
                                     description: User's birthday in YYYY-MM-DD format
                                     example: 1990-01-01
                                 email:
@@ -126,9 +125,9 @@ nelmio_api_doc:
                                     type: string
                                     description: User's gender
                                     enum:
-                                        - male
-                                        - female
-                                        - other
+                                        - Male
+                                        - Female
+                                        - Non-binary
                                     example: male
                         avatar:
                             type: string

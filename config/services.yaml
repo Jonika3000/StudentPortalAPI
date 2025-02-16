@@ -1,5 +1,5 @@
 parameters:
-    upload_directory: '%kernel.project_dir%/public/uploads/images'
+    public_directory: '%kernel.project_dir%/public/'
     frontend: '%env(APP_FRONTEND)%'
 services:
     _defaults:
@@ -16,7 +16,7 @@ services:
 
     App\Utils\FileHelper:
         arguments:
-            $uploadDir: '%upload_directory%'
+            $publicDir: '%public_directory%'
     admin.student:
         class: App\Admin\StudentAdmin
         tags:

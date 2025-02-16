@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Decoder\FileBagDecoder\RegisterFileBagDecoder;
 use App\Decoder\FileBagDecoder\UserEditFileBagDecoder;
 use App\Decoder\Password\PasswordResetDecoder;
 use App\Decoder\Password\PasswordResetRequestDecoder;
+use App\Decoder\User\RegisterRequestDecoder;
 use App\Decoder\User\UserEditRequestDecoder;
 use App\Request\Password\PasswordResetRequest;
 use App\Request\Password\PasswordResetRequestRequest;
+use App\Request\User\RegisterRequest;
 use App\Request\User\UserEditRequest;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
@@ -17,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'api_')]
 class UserController extends AbstractController
@@ -24,13 +28,16 @@ class UserController extends AbstractController
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly UserService $userService,
+        private readonly RegisterRequestDecoder $registerRequestDecoder,
+        private readonly RegisterFileBagDecoder $registerFileBagDecoder,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
     #[OA\Get(
         path: '/api/user/me',
         summary: 'Get the current authenticated user\'s details.',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         tags: ['User'],
         responses: [
             new OA\Response(
@@ -45,11 +52,13 @@ class UserController extends AbstractController
         ]
     )]
     #[Route('/user/me', name: 'user_me', methods: 'GET')]
-    public function index(): JsonResponse
+    public function get(): JsonResponse
     {
         $token = $this->tokenStorage->getToken();
+        $user = $this->userService->getUserByToken($token);
+        $data = $this->serializer->serialize($user, 'json', ['groups' => 'user_read']);
 
-        return $this->json($this->userService->getUserByToken($token));
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
     #[OA\Post(
@@ -139,11 +148,11 @@ class UserController extends AbstractController
         }
     }
 
-    #[OA\Patch(
+    #[OA\Post(
         path: '/api/user/update',
         description: 'Allows an authenticated user to update their profile information, including address, phone number, and avatar.',
         summary: 'Update user information',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
@@ -168,8 +177,8 @@ class UserController extends AbstractController
             new OA\Response(response: 500, description: 'Internal server error.'),
         ]
     )]
-    #[Route('/user/update', name: 'user_update', methods: ['PATCH'])]
-    public function userEdit(
+    #[Route('/user/update', name: 'user_update', methods: ['POST'])]
+    public function edit(
         UserEditRequest $request,
         UserEditFileBagDecoder $fileBagDecoder,
         UserEditRequestDecoder $requestDecoder,
@@ -184,5 +193,52 @@ class UserController extends AbstractController
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
+    }
+
+    #[OA\Post(
+        path: '/api/register',
+        description: 'Endpoint for user registration.',
+        summary: 'Register a new user',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/RegisterRequest')
+            )
+        ),
+        tags: ['User'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'User registered successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Registered Successfully'
+                        ),
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Validation error',
+            ),
+            new OA\Response(
+                response: 500,
+                description: 'Internal server error',
+            ),
+        ]
+    )]
+    #[Route('/register', name: 'register', methods: 'POST')]
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $files = $this->registerFileBagDecoder->decode($request->getFiles());
+        $params = $this->registerRequestDecoder->decode($request);
+        $this->userService->postAction($params, $files);
+
+        return new JsonResponse(['message' => 'Registered Successfully']);
     }
 }

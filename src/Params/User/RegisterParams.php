@@ -2,7 +2,7 @@
 
 namespace App\Params\User;
 
-use App\Enums\Gender;
+use App\Enum\Gender;
 
 class RegisterParams
 {

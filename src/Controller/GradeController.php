@@ -89,7 +89,7 @@ class GradeController extends AbstractController
         ]
     )]
     #[IsGranted(UserRoles::TEACHER)]
-    #[Route('/grade/{id}', name: 'grade_update', methods: ['PATCH'])]
+    #[Route('/grade/{id}', name: 'grade_patch', methods: ['PATCH'])]
     public function update(Grade $grade, GradeUpdateRequest $request, GradeUpdateDecoder $decoder): JsonResponse
     {
         try {

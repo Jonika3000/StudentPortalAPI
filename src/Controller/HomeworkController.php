@@ -51,7 +51,7 @@ class HomeworkController extends AbstractController
         ]
     )]
     #[IsGranted(UserRoles::TEACHER)]
-    #[Route('/homework', name: 'homework', methods: ['POST'])]
+    #[Route('/homework', name: 'homework_post', methods: ['POST'])]
     public function store(HomeworkPostRequest $request, HomeworkPostDecoder $paramsDecoder): JsonResponse
     {
         try {
@@ -87,7 +87,7 @@ class HomeworkController extends AbstractController
             ),
         ]
     )]
-    #[Route('/homework/{id}', name: 'homework_get_by_id', methods: ['GET'])]
+    #[Route('/homework/{id}', name: 'homework_get', methods: ['GET'])]
     public function get(Homework $homework): JsonResponse
     {
         try {
@@ -172,7 +172,7 @@ class HomeworkController extends AbstractController
         ]
     )]
     #[IsGranted(UserRoles::TEACHER)]
-    #[Route('/homework/{id}', name: 'homework_update', methods: ['PATCH'])]
+    #[Route('/homework/{id}', name: 'homework_patch', methods: ['PATCH'])]
     public function update(Homework $homework, HomeworkUpdateRequest $request, HomeworkUpdateDecoder $homeworkUpdateDecoder): JsonResponse
     {
         try {

@@ -16,23 +16,25 @@ class Classroom implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['classroom_read', 'student_read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['student_read'])]
+    #[Groups(['classroom_read', 'student_read'])]
     private ?Uuid $uuid = null;
 
     /**
      * @var Collection<int, Student>
      */
-    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'classRoom')]
+    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'classroom')]
+    #[Groups(['classroom_read'])]
     private Collection $students;
 
     /**
      * @var Collection<int, Lesson>
      */
     #[ORM\OneToMany(targetEntity: Lesson::class, mappedBy: 'classroom')]
-    #[Groups(['student_read'])]
+    #[Groups(['classroom_read'])]
     private Collection $lessons;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

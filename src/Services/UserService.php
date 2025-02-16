@@ -54,7 +54,7 @@ readonly class UserService
 
         $this->validatorService->validateObject($user);
 
-        $this->userRepository->saveUser($user);
+        $this->userRepository->saveAction($user);
 
         return $user;
     }
@@ -78,7 +78,7 @@ readonly class UserService
         $resetToken = bin2hex(random_bytes(32));
         $user->setResetToken($resetToken);
         $user->setResetTokenExpiry(new \DateTime('+1 hour'));
-        $this->userRepository->saveUser($user);
+        $this->userRepository->saveAction($user);
 
         $resetLink = sprintf($this->params->get('frontend')
             .'/reset-password/%s', $resetToken);
@@ -126,7 +126,7 @@ readonly class UserService
         $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
         $user->setResetToken(null);
         $user->setResetTokenExpiry(null);
-        $this->userRepository->saveUser($user);
+        $this->userRepository->saveAction($user);
 
         try {
             $this->mailerService->sendMail(
@@ -150,13 +150,13 @@ readonly class UserService
             $user->setAddress($params->address);
         }
 
-        if ($files) {
+        if ($files && $user->getAvatarPath()) {
             $this->fileHelper->deleteFile($user->getAvatarPath(), true);
 
             $avatarPath = $this->fileHelper->uploadFile($files->avatar, '/images/avatars/', true);
             $user->setAvatarPath($avatarPath);
         }
 
-        $this->userRepository->updateUser($user);
+        $this->userRepository->updateAction($user);
     }
 }

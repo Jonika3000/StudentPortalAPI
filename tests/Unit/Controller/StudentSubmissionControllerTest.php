@@ -13,6 +13,7 @@ use App\Services\UserService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class StudentSubmissionControllerTest extends TestCase
 {
@@ -21,9 +22,12 @@ class StudentSubmissionControllerTest extends TestCase
         $studentSubmissionService = $this->createMock(StudentSubmissionService::class);
         $userService = $this->createMock(UserService::class);
         $fileBagDecoder = $this->createMock(StudentSubmissionFileBagDecoder::class);
+        $serializer = $this->createMock(SerializerInterface::class);
+
         $userMock = $this->createMock(User::class);
         $userService->method('getCurrentUser')->willReturn($userMock);
-        $controller = new StudentSubmissionController($studentSubmissionService, $userService, $fileBagDecoder);
+
+        $controller = new StudentSubmissionController($studentSubmissionService, $userService, $fileBagDecoder, $serializer);
         $response = $controller->store($this->createMock(StudentSubmissionPostRequest::class), $this->createMock(StudentSubmissionPostDecoder::class));
 
         $this->assertInstanceOf(JsonResponse::class, $response);
@@ -35,9 +39,12 @@ class StudentSubmissionControllerTest extends TestCase
         $studentSubmissionService = $this->createMock(StudentSubmissionService::class);
         $userService = $this->createMock(UserService::class);
         $fileBagDecoder = $this->createMock(StudentSubmissionFileBagDecoder::class);
+        $serializer = $this->createMock(SerializerInterface::class);
+
         $userMock = $this->createMock(User::class);
         $userService->method('getCurrentUser')->willReturn($userMock);
-        $controller = new StudentSubmissionController($studentSubmissionService, $userService, $fileBagDecoder);
+
+        $controller = new StudentSubmissionController($studentSubmissionService, $userService, $fileBagDecoder, $serializer);
 
         $response = $controller->delete($this->createMock(StudentSubmission::class));
 
@@ -50,9 +57,12 @@ class StudentSubmissionControllerTest extends TestCase
         $studentSubmissionService = $this->createMock(StudentSubmissionService::class);
         $userService = $this->createMock(UserService::class);
         $fileBagDecoder = $this->createMock(StudentSubmissionFileBagDecoder::class);
+        $serializer = $this->createMock(SerializerInterface::class);
+
         $userMock = $this->createMock(User::class);
         $userService->method('getCurrentUser')->willReturn($userMock);
-        $controller = new StudentSubmissionController($studentSubmissionService, $userService, $fileBagDecoder);
+
+        $controller = new StudentSubmissionController($studentSubmissionService, $userService, $fileBagDecoder, $serializer);
 
         $response = $controller->get($this->createMock(StudentSubmission::class));
 

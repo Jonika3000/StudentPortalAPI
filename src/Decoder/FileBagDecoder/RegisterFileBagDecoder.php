@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\FileBag;
 
 class RegisterFileBagDecoder
 {
-    public function decode(FileBag $fileBag): RegisterFilesParams
+    public function decode(FileBag $fileBag): ?RegisterFilesParams
     {
-        return new RegisterFilesParams(
+        return $fileBag->get('avatar') ? new RegisterFilesParams(
             $fileBag->get('avatar')
-        );
+        ) : null;
     }
 }

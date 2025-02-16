@@ -31,11 +31,10 @@ readonly class StudentSubmissionService
     public function postAction(StudentSubmissionPostParams $params, User $user, ?StudentSubmissionFilesParams $files = null): StudentSubmission
     {
         $homework = $this->homeworkService->findHomeworkById($params->homework);
-        if (!$homework || !$this->homeworkService->isHomeworkBelongsToStudent($homework, $user)) {
+        $student = $this->studentService->getStudentByUser($user);
+        if (!$homework || !$this->homeworkService->isHomeworkBelongsToStudent($homework, $student)) {
             throw new HomeworkPermissionException();
         }
-
-        $student = $this->studentService->getStudentByUser($user);
 
         $studentSubmission = new StudentSubmission();
         $studentSubmission->setHomework($homework);
@@ -46,9 +45,7 @@ readonly class StudentSubmissionService
         $this->submissionRepository->saveAction($studentSubmission);
 
         if ($files) {
-            foreach ($files->files as $file) {
-                $this->studentSubmissionFileService->saveStudentSubmissionFile($file, $studentSubmission);
-            }
+            $this->studentSubmissionFileService->saveStudentSubmissionFile($files->file, $studentSubmission);
         }
 
         return $studentSubmission;
@@ -82,8 +79,6 @@ readonly class StudentSubmissionService
             if ($studentSubmission->getStudent()->getId() !== $student->getId()) {
                 throw new AccessDeniedException();
             }
-
-            return $studentSubmission;
         } catch (StudentNotFoundException) {
             try {
                 $teacher = $this->teacherService->getTeacherByAssociatedUser($user);
@@ -92,12 +87,12 @@ readonly class StudentSubmissionService
                 if (!$teacher->getLesson()->contains($homeworkLesson)) {
                     throw new AccessDeniedException();
                 }
-
-                return $studentSubmission;
             } catch (TeacherNotFoundException) {
                 throw new AccessDeniedException();
             }
         }
+
+        return $studentSubmission;
     }
 
     /**
@@ -119,9 +114,8 @@ readonly class StudentSubmissionService
             foreach ($studentSubmission->getStudentSubmissionFiles() as $studentSubmissionFile) {
                 $this->studentSubmissionFileService->removeStudentSubmissionFile($studentSubmissionFile);
             }
-            foreach ($files->files as $file) {
-                $this->studentSubmissionFileService->saveStudentSubmissionFile($file, $studentSubmission);
-            }
+
+            $this->studentSubmissionFileService->saveStudentSubmissionFile($files->file, $studentSubmission);
         }
 
         return $studentSubmission;

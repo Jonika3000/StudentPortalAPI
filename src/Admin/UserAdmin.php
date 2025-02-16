@@ -2,7 +2,7 @@
 
 namespace App\Admin;
 
-use App\Enums\Gender;
+use App\Enum\Gender;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;

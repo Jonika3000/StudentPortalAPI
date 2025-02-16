@@ -2,7 +2,7 @@
 
 namespace App\Request\User;
 
-use App\Enums\Gender;
+use App\Enum\Gender;
 use App\Shared\BaseRequest;
 use App\Validator\Constraint\OnlyLetters;
 use App\Validator\Constraint\PhoneNumber;
