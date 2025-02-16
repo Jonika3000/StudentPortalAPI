@@ -6,6 +6,7 @@ use App\Repository\LessonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LessonRepository::class)]
@@ -22,6 +23,7 @@ class Lesson implements \Stringable
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['classroom_read'])]
     private ?Subject $subject = null;
 
     /**
@@ -35,6 +37,7 @@ class Lesson implements \Stringable
      * @var Collection<int, Teacher>
      */
     #[ORM\ManyToMany(targetEntity: Teacher::class, mappedBy: 'lesson')]
+    #[Groups(['classroom_read'])]
     private Collection $teachers;
 
     public function __construct()

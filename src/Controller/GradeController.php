@@ -45,7 +45,7 @@ class GradeController extends AbstractController
             ),
         ]
     )]
-    #[IsGranted(UserRoles::TEACHER, UserRoles::ADMIN)]
+    #[IsGranted(UserRoles::TEACHER)]
     #[Route('/grade', name: 'grade_post', methods: ['POST'])]
     public function post(GradePostRequest $request, GradePostDecoder $decoder): JsonResponse
     {

@@ -6,6 +6,7 @@ use App\Repository\SubjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SubjectRepository::class)]
@@ -22,6 +23,7 @@ class Subject implements \Stringable
         max: 255,
         maxMessage: 'Name cannot be longer than {{ limit }} characters.'
     )]
+    #[Groups(['classroom_read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -34,6 +36,7 @@ class Subject implements \Stringable
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['classroom_read'])]
     private ?string $imagePath = null;
 
     /**

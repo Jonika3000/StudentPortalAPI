@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'api_')]
 class ClassroomController extends AbstractController
@@ -18,9 +19,6 @@ class ClassroomController extends AbstractController
     ) {
     }
 
-    /**
-     * Get classroom information by ID (only for teachers).
-     */
     #[OA\Get(
         path: '/api/classroom/{id}',
         summary: 'Get classroom information',
@@ -45,10 +43,12 @@ class ClassroomController extends AbstractController
             new OA\Response(response: 404, description: 'Classroom not found'),
         ]
     )]
-    #[IsGranted(UserRoles::TEACHER, UserRoles::ADMIN, UserRoles::MANAGER)]
+    #[IsGranted(UserRoles::TEACHER)]
     #[Route('/classroom/{id}', name: 'classroom_get', methods: ['GET'])]
-    public function getClassroomInfo(Classroom $classroom): JsonResponse
+    public function getClassroomInfo(Classroom $classroom, SerializerInterface $serializer): JsonResponse
     {
-        return new JsonResponse($classroom, Response::HTTP_OK);
+        $data = $serializer->serialize($classroom, 'json', ['groups' => 'classroom_read']);
+
+        return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 }

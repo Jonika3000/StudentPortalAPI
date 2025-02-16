@@ -22,10 +22,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['classroom_read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['user_read', 'student_read', 'teacher_read'])]
+    #[Groups(['user_read', 'student_read', 'teacher_read, classroom_read'])]
     private ?string $uuid = null;
 
     /**
@@ -43,12 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['user_read', 'student_read', 'teacher_read'])]
+    #[Groups(['user_read', 'student_read', 'teacher_read', 'classroom_read'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['user_read', 'student_read', 'teacher_read'])]
+    #[Groups(['user_read', 'student_read', 'teacher_read', 'classroom_read'])]
     private ?string $secondName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -58,12 +59,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     private ?\DateTimeInterface $birthday = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user_read', 'student_read', 'teacher_read'])]
+    #[Groups(['user_read', 'student_read', 'teacher_read', 'classroom_read'])]
     private ?string $avatarPath = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Email]
-    #[Groups(['user_read', 'student_read', 'teacher_read'])]
+    #[Groups(['user_read', 'student_read', 'teacher_read', 'classroom_read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -78,7 +79,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     #[ORM\Column(enumType: Gender::class)]
     #[Assert\NotBlank]
-    #[Groups(['user_read', 'student_read', 'teacher_read'])]
+    #[Groups(['user_read', 'student_read', 'teacher_read', 'classroom_read'])]
     private ?Gender $gender = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
