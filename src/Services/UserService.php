@@ -150,7 +150,7 @@ readonly class UserService
             $user->setAddress($params->address);
         }
 
-        if ($files) {
+        if ($files && $user->getAvatarPath()) {
             $this->fileHelper->deleteFile($user->getAvatarPath(), true);
 
             $avatarPath = $this->fileHelper->uploadFile($files->avatar, '/images/avatars/', true);

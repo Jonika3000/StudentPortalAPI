@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ClassroomController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
