@@ -15,6 +15,7 @@ class Subject implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['subject_read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -23,7 +24,7 @@ class Subject implements \Stringable
         max: 255,
         maxMessage: 'Name cannot be longer than {{ limit }} characters.'
     )]
-    #[Groups(['classroom_read'])]
+    #[Groups(['subject_read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -32,11 +33,12 @@ class Subject implements \Stringable
         max: 255,
         maxMessage: 'Description cannot be longer than {{ limit }} characters.'
     )]
+    #[Groups(['subject_read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['classroom_read'])]
+    #[Groups(['subject_read'])]
     private ?string $imagePath = null;
 
     /**

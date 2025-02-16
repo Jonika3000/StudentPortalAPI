@@ -15,6 +15,7 @@ class Lesson implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['lesson_read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
@@ -23,7 +24,7 @@ class Lesson implements \Stringable
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['classroom_read'])]
+    #[Groups(['lesson_read'])]
     private ?Subject $subject = null;
 
     /**
@@ -31,13 +32,14 @@ class Lesson implements \Stringable
      */
     #[ORM\OneToMany(targetEntity: Homework::class, mappedBy: 'lesson')]
     #[Assert\NotNull]
+    #[Groups(['lesson_read'])]
     private Collection $homework;
 
     /**
      * @var Collection<int, Teacher>
      */
     #[ORM\ManyToMany(targetEntity: Teacher::class, mappedBy: 'lesson')]
-    #[Groups(['classroom_read'])]
+    #[Groups(['lesson_read'])]
     private Collection $teachers;
 
     public function __construct()

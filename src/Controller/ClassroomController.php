@@ -51,7 +51,7 @@ class ClassroomController extends AbstractController
         $data = $this->serializer->serialize(
             $classroom,
             'json',
-            ['groups' => ['classroom_read', 'user_read', 'teacher_read', 'student_read']]
+            ['groups' => ['classroom_read', 'user_read', 'teacher_read', 'student_read', 'subject_read', 'lesson_read']]
         );
 
         return new JsonResponse($data, Response::HTTP_OK, [], true);
