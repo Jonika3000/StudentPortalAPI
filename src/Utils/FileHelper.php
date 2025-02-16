@@ -8,7 +8,7 @@ class FileHelper
 {
     public const AVATAR_SIZES = [50, 150, 300, 600];
 
-    public function __construct(private readonly string $uploadDir)
+    public function __construct(private readonly string $publicDir)
     {
     }
 
@@ -16,7 +16,7 @@ class FileHelper
     {
         $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
         $extension = $uploadedFile->guessExtension();
-        $systemDir = $this->uploadDir.$path;
+        $systemDir = $this->publicDir.'uploads'.$path;
         $newFilename = $originalFilename.'-'.uniqid();
 
         if ($resizeImages) {
@@ -36,13 +36,11 @@ class FileHelper
 
     public function deleteFile(string $path, bool $resizeImages): void
     {
-        $fullPath = $this->uploadDir.$path;
-
+        $fullPath = $this->publicDir.$path;
         $fileInfo = pathinfo($fullPath);
         $directory = $fileInfo['dirname'];
         $filename = $fileInfo['filename'];
         $extension = $fileInfo['extension'];
-
         if (file_exists($fullPath)) {
             unlink($fullPath);
         }

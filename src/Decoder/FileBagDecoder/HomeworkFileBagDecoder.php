@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\FileBag;
 
 class HomeworkFileBagDecoder
 {
-    public function decode(FileBag $fileBag): HomeworkFilesParams
+    public function decode(FileBag $fileBag): ?HomeworkFilesParams
     {
-        return new HomeworkFilesParams(
+        return $fileBag->get('files') ? new HomeworkFilesParams(
             $fileBag->get('files')
-        );
+        ) : null;
     }
 }

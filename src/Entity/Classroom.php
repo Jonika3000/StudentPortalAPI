@@ -16,6 +16,7 @@ class Classroom implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['classroom_read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'uuid')]

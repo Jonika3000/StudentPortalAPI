@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\GradeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GradeRepository::class)]
@@ -12,15 +13,18 @@ class Grade
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['student_submission_read'])]
     private ?int $id = null;
 
     #[ORM\Column]
     #[Assert\NotNull(message: 'Grade cannot be null.')]
+    #[Groups(['student_submission_read'])]
     private ?int $grade = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: 'Teacher cannot be null.')]
+    #[Groups(['student_submission_read'])]
     private ?Teacher $teacher = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -28,6 +32,7 @@ class Grade
         max: 255,
         maxMessage: 'Comment cannot be longer than {{ limit }} characters.'
     )]
+    #[Groups(['student_submission_read'])]
     private ?string $comment = null;
 
     #[ORM\OneToOne(inversedBy: 'grade', cascade: ['persist', 'remove'])]

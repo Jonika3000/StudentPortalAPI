@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\FileBag;
 
 class UserEditFileBagDecoder
 {
-    public function decode(FileBag $fileBag): UserEditFilesParams
+    public function decode(FileBag $fileBag): ?UserEditFilesParams
     {
-        return new UserEditFilesParams(
+        return $fileBag->get('avatar') ? new UserEditFilesParams(
             $fileBag->get('avatar')
-        );
+        ) : null;
     }
 }

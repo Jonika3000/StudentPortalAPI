@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Encoder\Homework\HomeworkEncoder;
 use App\Entity\Homework;
+use App\Entity\Student;
 use App\Entity\User;
 use App\Params\FilesParams\HomeworkFilesParams;
 use App\Params\Homework\HomeworkPostParams;
@@ -155,7 +156,7 @@ readonly class HomeworkService
         return $homework;
     }
 
-    public function isHomeworkBelongsToStudent(Homework $homework, User $student): bool
+    public function isHomeworkBelongsToStudent(Homework $homework, Student $student): bool
     {
         return $homework->getLesson()->getClassroom()->getStudents()->contains($student);
     }

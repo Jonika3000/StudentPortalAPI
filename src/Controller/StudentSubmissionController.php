@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'api_')]
 class StudentSubmissionController extends AbstractController
@@ -26,6 +27,7 @@ class StudentSubmissionController extends AbstractController
         private readonly StudentSubmissionService $studentSubmissionService,
         private readonly UserService $userService,
         private readonly StudentSubmissionFileBagDecoder $fileBagDecoder,
+        private SerializerInterface $serializer,
     ) {
     }
 
@@ -33,7 +35,7 @@ class StudentSubmissionController extends AbstractController
         path: '/api/student/submission',
         description: 'Create a new student submission',
         summary: 'Create a student submission',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
@@ -66,9 +68,10 @@ class StudentSubmissionController extends AbstractController
             $user = $this->userService->getCurrentUser();
             $params = $paramsDecoder->decode($request);
             $files = $this->fileBagDecoder->decode($request->getFiles());
+            $this->studentSubmissionService->postAction($params, $user, $files);
 
             return new JsonResponse(
-                $this->studentSubmissionService->postAction($params, $user, $files),
+                [],
                 Response::HTTP_OK
             );
         } catch (\Exception $exception) {
@@ -80,7 +83,7 @@ class StudentSubmissionController extends AbstractController
         path: '/api/student/submission/{id}',
         description: 'Delete a student submission',
         summary: 'Delete a submission',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         tags: ['Student Submission'],
         parameters: [
             new OA\Parameter(
@@ -121,7 +124,7 @@ class StudentSubmissionController extends AbstractController
         path: '/api/student/submission/{id}',
         description: 'Get a student submission',
         summary: 'Get submission details',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         tags: ['Student Submission'],
         parameters: [
             new OA\Parameter(
@@ -150,9 +153,11 @@ class StudentSubmissionController extends AbstractController
     {
         try {
             $user = $this->userService->getCurrentUser();
+            $studentSubmission = $this->studentSubmissionService->getByUser($studentSubmission, $user);
+            $data = $this->serializer->serialize($studentSubmission, 'json', ['groups' => 'student_submission_read']);
 
             return new JsonResponse(
-                $this->studentSubmissionService->getByUser($studentSubmission, $user),
+                $data,
                 Response::HTTP_OK
             );
         } catch (\Exception $exception) {
@@ -160,11 +165,11 @@ class StudentSubmissionController extends AbstractController
         }
     }
 
-    #[OA\Patch(
+    #[OA\Post(
         path: '/api/student/submission/{id}',
         description: 'Update a student submission',
         summary: 'Update a submission',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
@@ -199,7 +204,7 @@ class StudentSubmissionController extends AbstractController
         ]
     )]
     #[IsGranted(UserRoles::STUDENT)]
-    #[Route('/student/submission/{id}', name: 'student_submission_patch', methods: ['PATCH'])]
+    #[Route('/student/submission/{id}', name: 'student_submission_update', methods: ['POST'])]
     public function update(
         StudentSubmission $studentSubmission,
         StudentSubmissionUpdateRequest $request,

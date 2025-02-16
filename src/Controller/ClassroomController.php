@@ -16,6 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ClassroomController extends AbstractController
 {
     public function __construct(
+        private SerializerInterface $serializer,
     ) {
     }
 
@@ -45,9 +46,9 @@ class ClassroomController extends AbstractController
     )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/classroom/{id}', name: 'classroom_get', methods: ['GET'])]
-    public function getClassroomInfo(Classroom $classroom, SerializerInterface $serializer): JsonResponse
+    public function getClassroomInfo(Classroom $classroom): JsonResponse
     {
-        $data = $serializer->serialize($classroom, 'json', ['groups' => 'classroom_read']);
+        $data = $this->serializer->serialize($classroom, 'json', ['groups' => 'classroom_read']);
 
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
