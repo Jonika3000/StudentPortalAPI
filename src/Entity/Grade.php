@@ -13,18 +13,18 @@ class Grade
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['student_submission_read'])]
+    #[Groups(['grade_read'])]
     private ?int $id = null;
 
     #[ORM\Column]
     #[Assert\NotNull(message: 'Grade cannot be null.')]
-    #[Groups(['student_submission_read'])]
+    #[Groups(['grade_read'])]
     private ?int $grade = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotNull(message: 'Teacher cannot be null.')]
-    #[Groups(['student_submission_read'])]
+    #[Groups(['grade_read'])]
     private ?Teacher $teacher = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -32,7 +32,7 @@ class Grade
         max: 255,
         maxMessage: 'Comment cannot be longer than {{ limit }} characters.'
     )]
-    #[Groups(['student_submission_read'])]
+    #[Groups(['grade_read'])]
     private ?string $comment = null;
 
     #[ORM\OneToOne(inversedBy: 'grade', cascade: ['persist', 'remove'])]

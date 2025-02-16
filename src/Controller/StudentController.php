@@ -21,6 +21,7 @@ class StudentController extends AbstractController
     public function __construct(
         private readonly UserService $userService,
         private readonly StudentService $studentService,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -39,12 +40,14 @@ class StudentController extends AbstractController
         ]
     )]
     #[Route('/student/me', name: 'student_me', methods: 'GET')]
-    public function index(): JsonResponse
+    public function get(): JsonResponse
     {
         try {
             $user = $this->userService->getCurrentUser();
+            $student = $this->studentService->getStudentByUser($user);
+            $data = $this->serializer->serialize($student, 'json', ['groups' => ['student_read', 'user_read']]);
 
-            return new JsonResponse($this->studentService->getStudentByUser($user), Response::HTTP_OK);
+            return new JsonResponse($data, Response::HTTP_OK);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
@@ -78,7 +81,7 @@ class StudentController extends AbstractController
     #[Route('/student/{id}', name: 'student_get', methods: 'GET')]
     public function find(Student $student, SerializerInterface $serializer): JsonResponse
     {
-        $data = $serializer->serialize($student, 'json', ['groups' => 'student_read']);
+        $data = $serializer->serialize($student, 'json', ['groups' => ['student_read', 'user_read']]);
 
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }

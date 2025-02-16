@@ -15,12 +15,12 @@ class Teacher implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['classroom_read', 'student_submission_read'])]
+    #[Groups(['teacher_read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['classroom_read', 'student_submission_read'])]
+    #[Groups(['teacher_read'])]
     private ?User $associatedUser = null;
 
     /**

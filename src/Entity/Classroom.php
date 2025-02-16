@@ -16,11 +16,11 @@ class Classroom implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['classroom_read'])]
+    #[Groups(['classroom_read', 'student_read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'uuid')]
-    #[Groups(['classroom_read'])]
+    #[Groups(['classroom_read', 'student_read'])]
     private ?Uuid $uuid = null;
 
     /**

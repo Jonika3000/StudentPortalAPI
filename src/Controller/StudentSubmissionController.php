@@ -154,7 +154,11 @@ class StudentSubmissionController extends AbstractController
         try {
             $user = $this->userService->getCurrentUser();
             $studentSubmission = $this->studentSubmissionService->getByUser($studentSubmission, $user);
-            $data = $this->serializer->serialize($studentSubmission, 'json', ['groups' => 'student_submission_read']);
+            $data = $this->serializer->serialize(
+                $studentSubmission,
+                'json',
+                ['groups' => ['student_submission_read', 'user_read', 'grade_read', 'teacher_read', 'student_read', 'homework_read']]
+            );
 
             return new JsonResponse(
                 $data,

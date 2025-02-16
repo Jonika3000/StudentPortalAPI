@@ -48,7 +48,11 @@ class ClassroomController extends AbstractController
     #[Route('/classroom/{id}', name: 'classroom_get', methods: ['GET'])]
     public function getClassroomInfo(Classroom $classroom): JsonResponse
     {
-        $data = $this->serializer->serialize($classroom, 'json', ['groups' => 'classroom_read']);
+        $data = $this->serializer->serialize(
+            $classroom,
+            'json',
+            ['groups' => ['classroom_read', 'user_read', 'teacher_read', 'student_read']]
+        );
 
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }

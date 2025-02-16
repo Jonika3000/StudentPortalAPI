@@ -14,23 +14,24 @@ class Student implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['classroom_read', 'student_submission_read'])]
+    #[Groups(['student_read'])]
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['classroom_read', 'student_submission_read'])]
+    #[Groups(['student_read'])]
     private ?User $associatedUser = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    #[Groups(['classroom_read', 'student_submission_read'])]
+    #[Groups(['student_read'])]
     private ?string $contactParent = null;
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: true)]
     #[Assert\NotNull]
+    #[Groups(['student_read'])]
     private ?Classroom $classroom = null;
 
     public function __construct()
