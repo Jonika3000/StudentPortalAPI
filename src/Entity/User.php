@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Constants\UserRoles;
-use App\Enums\Gender;
+use App\Enum\Gender;
 use App\Repository\UserRepository;
 use App\Validator\Constraint\PhoneNumber;
 use Doctrine\DBAL\Types\Types;
