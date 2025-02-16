@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Decoder\FileBagDecoder\RegisterFileBagDecoder;
 use App\Decoder\FileBagDecoder\UserEditFileBagDecoder;
 use App\Decoder\Password\PasswordResetDecoder;
 use App\Decoder\Password\PasswordResetRequestDecoder;
+use App\Decoder\User\RegisterRequestDecoder;
 use App\Decoder\User\UserEditRequestDecoder;
 use App\Request\Password\PasswordResetRequest;
 use App\Request\Password\PasswordResetRequestRequest;
+use App\Request\User\RegisterRequest;
 use App\Request\User\UserEditRequest;
 use App\Services\UserService;
 use App\Utils\ExceptionHandleHelper;
@@ -24,6 +27,8 @@ class UserController extends AbstractController
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly UserService $userService,
+        private readonly RegisterRequestDecoder $registerRequestDecoder,
+        private readonly RegisterFileBagDecoder $registerFileBagDecoder,
     ) {
     }
 
@@ -184,5 +189,52 @@ class UserController extends AbstractController
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
+    }
+
+    #[OA\Post(
+        path: '/api/register',
+        description: 'Endpoint for user registration.',
+        summary: 'Register a new user',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/RegisterRequest')
+            )
+        ),
+        tags: ['User'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'User registered successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'message',
+                            type: 'string',
+                            example: 'Registered Successfully'
+                        ),
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Validation error',
+            ),
+            new OA\Response(
+                response: 500,
+                description: 'Internal server error',
+            ),
+        ]
+    )]
+    #[Route('/register', name: 'register', methods: 'POST')]
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        $files = $this->registerFileBagDecoder->decode($request->getFiles());
+        $params = $this->registerRequestDecoder->decode($request);
+        $this->userService->postAction($params, $files);
+
+        return new JsonResponse(['message' => 'Registered Successfully']);
     }
 }

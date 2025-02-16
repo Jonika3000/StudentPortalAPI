@@ -48,8 +48,8 @@ class CheckUserBirthdaysCommand extends Command
                     'error' => $e->getMessage(),
                     'exception' => $e,
                 ]);
+                $output->writeln('Error occurred: '.$e->getMessage());
             }
-            // TODO: change output to logger
             $output->writeln('Birthday email sent to: '.$user->getEmail());
         }
 

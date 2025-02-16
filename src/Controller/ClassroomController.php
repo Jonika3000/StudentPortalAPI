@@ -45,8 +45,8 @@ class ClassroomController extends AbstractController
             new OA\Response(response: 404, description: 'Classroom not found'),
         ]
     )]
-    #[IsGranted(UserRoles::TEACHER)]
-    #[Route('/classroom/{id}', name: 'classroom_teacher', methods: ['GET'])]
+    #[IsGranted(UserRoles::TEACHER, UserRoles::ADMIN, UserRoles::MANAGER)]
+    #[Route('/classroom/{id}', name: 'classroom_get', methods: ['GET'])]
     public function getClassroomInfo(Classroom $classroom): JsonResponse
     {
         return new JsonResponse($classroom, Response::HTTP_OK);

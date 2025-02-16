@@ -199,7 +199,7 @@ class StudentSubmissionController extends AbstractController
         ]
     )]
     #[IsGranted(UserRoles::STUDENT)]
-    #[Route('/student/submission/{id}', name: 'student_submission_update', methods: ['PATCH'])]
+    #[Route('/student/submission/{id}', name: 'student_submission_patch', methods: ['PATCH'])]
     public function update(
         StudentSubmission $studentSubmission,
         StudentSubmissionUpdateRequest $request,

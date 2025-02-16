@@ -49,7 +49,7 @@ class GradeService
             ->setStudentSubmission($studentSubmission)
             ->setTeacher($teacher);
 
-        $this->gradeRepository->saveGrade($grade);
+        $this->gradeRepository->saveAction($grade);
     }
 
     /**
@@ -64,7 +64,7 @@ class GradeService
         $grade->setGrade($params->grade)
             ->setComment($params->comment);
 
-        $this->gradeRepository->saveGrade($grade);
+        $this->gradeRepository->saveAction($grade);
     }
 
     /**
@@ -79,6 +79,6 @@ class GradeService
             throw new AccessDeniedException();
         }
 
-        $this->gradeRepository->deleteGrade($grade);
+        $this->gradeRepository->deleteAction($grade);
     }
 }
