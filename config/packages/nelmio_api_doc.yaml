@@ -235,25 +235,39 @@ nelmio_api_doc:
                                 format: binary
                 GradePostRequest:
                     type: object
-                    properties:
-                        grade:
-                            type: integer
-                        comment:
-                            type: string
-                        studentSubmission:
-                            type: integer
                     required:
-                        - grade
-                        - studentSubmission
+                        - data
+                    properties:
+                        data:
+                            type: object
+                            required:
+                                - grade
+                                - studentSubmission
+                            properties:
+                                grade:
+                                    type: integer
+                                    example: 90
+                                comment:
+                                    type: string
+                                    maxLength: 500
+                                    example: "Well done on the homework, but there's room for improvement."
+                                studentSubmission:
+                                    type: integer
+                                    example: 15
                 GradeUpdateRequest:
-                        type: object
-                        properties:
-                            grade:
-                                type: integer
-                            comment:
-                                type: string
-                        required:
-                            - grade
+                    type: object
+                    required:
+                        - data
+                    properties:
+                        data:
+                            type: object
+                            required:
+                                - grade
+                            properties:
+                                grade:
+                                    type: integer
+                                comment:
+                                    type: string
                 Classroom:
                     type: object
                     properties:

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Response\DTO\Common;
+namespace App\Shared\Response\Common\DTO;
 
 class User
 {

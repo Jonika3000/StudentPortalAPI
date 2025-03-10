@@ -5,7 +5,7 @@ namespace App\Encoder\Classroom;
 use App\Entity\Classroom;
 use App\Shared\Response\Classroom\ClassroomInfoResponse;
 use App\Shared\Response\Classroom\DTO\Student;
-use App\Shared\Response\DTO\Common\User;
+use App\Shared\Response\Common\DTO\User;
 
 class ClassroomInfoEncoder
 {

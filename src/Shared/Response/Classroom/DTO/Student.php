@@ -2,7 +2,7 @@
 
 namespace App\Shared\Response\Classroom\DTO;
 
-use App\Shared\Response\DTO\Common\User;
+use App\Shared\Response\Common\DTO\User;
 
 class Student
 {
