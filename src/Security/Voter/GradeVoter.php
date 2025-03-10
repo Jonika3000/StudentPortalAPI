@@ -36,6 +36,6 @@ final class GradeVoter extends Voter
             throw new \InvalidArgumentException('Teacher is not associated with the lesson.');
         }
 
-        return false;
+        return true;
     }
 }
