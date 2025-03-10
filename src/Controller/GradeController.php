@@ -31,10 +31,13 @@ class GradeController extends AbstractController
         path: '/api/grade',
         description: 'Assigns a grade to a student submission',
         summary: 'Create a new grade',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/GradePostRequest')
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/GradePostRequest')
+            )
         ),
         tags: ['Grade'],
         responses: [
