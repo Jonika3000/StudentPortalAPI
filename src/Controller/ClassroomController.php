@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
+use App\Encoder\Classroom\ClassroomInfoEncoder;
 use App\Entity\Classroom;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -46,14 +46,10 @@ class ClassroomController extends AbstractController
     )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/classroom/{id}', name: 'classroom_get', methods: ['GET'])]
-    public function getClassroomInfo(Classroom $classroom): JsonResponse
+    public function getClassroomInfo(Classroom $classroom, ClassroomInfoEncoder $encoder): JsonResponse
     {
-        $data = $this->serializer->serialize(
-            $classroom,
-            'json',
-            ['groups' => ['classroom_read', 'user_read', 'teacher_read', 'student_read', 'subject_read', 'lesson_read']]
-        );
+        $data = $encoder->encode($classroom);
 
-        return new JsonResponse($data, Response::HTTP_OK, [], true);
+        return new JsonResponse($data);
     }
 }
