@@ -10,16 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'api_')]
 class ClassroomController extends AbstractController
 {
-    public function __construct(
-        private readonly SerializerInterface $serializer,
-    ) {
-    }
-
     #[OA\Get(
         path: '/api/classroom/{id}',
         summary: 'Get classroom information',

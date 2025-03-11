@@ -146,7 +146,7 @@ class HomeworkController extends AbstractController
         path: '/api/homework/{id}',
         description: 'Updates a homework entry, accessible by teachers',
         summary: 'Update a homework entry',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(

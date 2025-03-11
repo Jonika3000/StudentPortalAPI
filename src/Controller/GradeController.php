@@ -65,14 +65,17 @@ class GradeController extends AbstractController
         }
     }
 
-    #[OA\Patch(
+    #[OA\Post(
         path: '/api/grade/{id}',
         description: 'Modifies an existing grade',
         summary: 'Update an existing grade',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/GradeUpdateRequest')
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: '#/components/schemas/GradeUpdateRequest')
+            )
         ),
         tags: ['Grade'],
         parameters: [
@@ -92,7 +95,7 @@ class GradeController extends AbstractController
         ]
     )]
     #[IsGranted(UserRoles::TEACHER)]
-    #[Route('/grade/{id}', name: 'grade_patch', methods: ['PATCH'])]
+    #[Route('/grade/{id}', name: 'grade_patch', methods: ['POST'])]
     public function update(Grade $grade, GradeUpdateRequest $request, GradeUpdateDecoder $decoder): JsonResponse
     {
         try {
@@ -110,7 +113,7 @@ class GradeController extends AbstractController
         path: '/api/grade/{id}',
         description: 'Removes a grade entry',
         summary: 'Delete a grade',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         tags: ['Grade'],
         parameters: [
             new OA\Parameter(
