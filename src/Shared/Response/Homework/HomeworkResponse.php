@@ -2,7 +2,6 @@
 
 namespace App\Shared\Response\Homework;
 
-use App\Entity\StudentSubmission;
 use App\Shared\Response\StudentSubmission\StudentSubmissionResponse;
 
 class HomeworkResponse
@@ -26,6 +25,7 @@ class HomeworkResponse
         //            : null;
     }
 
+    // @TODO: delete this part
     public function toArray(): array
     {
         return [

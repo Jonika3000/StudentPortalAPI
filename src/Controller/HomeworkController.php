@@ -6,6 +6,7 @@ use App\Constants\UserRoles;
 use App\Decoder\FileBagDecoder\HomeworkFileBagDecoder;
 use App\Decoder\Homework\HomeworkPostDecoder;
 use App\Decoder\Homework\HomeworkUpdateDecoder;
+use App\Encoder\Homework\HomeworkInfoEncoder;
 use App\Entity\Homework;
 use App\Request\Homework\HomeworkPostRequest;
 use App\Request\Homework\HomeworkUpdateRequest;
@@ -33,7 +34,7 @@ class HomeworkController extends AbstractController
         path: '/api/homework',
         description: 'Creates a new homework assignment',
         summary: 'Create a new homework',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
@@ -58,18 +59,20 @@ class HomeworkController extends AbstractController
             $user = $this->userService->getCurrentUser();
             $params = $paramsDecoder->decode($request);
             $files = $this->fileBagDecoder->decode($request->getFiles());
+            $this->homeworkService->postAction($params, $user, $files);
 
-            return new JsonResponse($this->homeworkService->postAction($params, $user, $files), Response::HTTP_OK);
+            return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
     }
 
+    //@TODO: as teacher doest working
     #[OA\Get(
         path: '/api/homework/{id}',
         description: 'Retrieve a specific homework entry',
         summary: 'Get homework details',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         tags: ['Homework'],
         parameters: [
             new OA\Parameter(
@@ -88,7 +91,7 @@ class HomeworkController extends AbstractController
         ]
     )]
     #[Route('/homework/{id}', name: 'homework_get', methods: ['GET'])]
-    public function get(Homework $homework): JsonResponse
+    public function getHomeworkInfo(Homework $homework, HomeworkInfoEncoder $encoder): JsonResponse
     {
         try {
             $user = $this->userService->getCurrentUser();
@@ -99,8 +102,8 @@ class HomeworkController extends AbstractController
             if (in_array(UserRoles::STUDENT, $user->getRoles(), true)) {
                 $this->homeworkService->getHomeworkStudent($homework, $user);
             }
-
-            return new JsonResponse($homework, Response::HTTP_OK);
+            $encodedData = $encoder->encode($homework);
+            return new JsonResponse($encodedData);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
@@ -110,7 +113,7 @@ class HomeworkController extends AbstractController
         path: '/api/homework/{id}',
         description: 'Deletes a homework entry, accessible by teachers',
         summary: 'Delete a homework entry',
-        security: [['bearerAuth' => []]],
+        security: [['Bearer' => []]],
         tags: ['Homework'],
         parameters: [
             new OA\Parameter(
@@ -142,7 +145,8 @@ class HomeworkController extends AbstractController
         }
     }
 
-    #[OA\Patch(
+    //@TODO: files upload doesnt working
+    #[OA\Post(
         path: '/api/homework/{id}',
         description: 'Updates a homework entry, accessible by teachers',
         summary: 'Update a homework entry',
@@ -172,7 +176,7 @@ class HomeworkController extends AbstractController
         ]
     )]
     #[IsGranted(UserRoles::TEACHER)]
-    #[Route('/homework/{id}', name: 'homework_patch', methods: ['PATCH'])]
+    #[Route('/homework/{id}', name: 'homework_patch', methods: ['POST'])]
     public function update(Homework $homework, HomeworkUpdateRequest $request, HomeworkUpdateDecoder $homeworkUpdateDecoder): JsonResponse
     {
         try {
@@ -182,7 +186,7 @@ class HomeworkController extends AbstractController
 
             $updatedHomework = $this->homeworkService->updateAction($homework, $user, $params, $files);
 
-            return new JsonResponse($updatedHomework, Response::HTTP_OK);
+            return new JsonResponse($updatedHomework);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
