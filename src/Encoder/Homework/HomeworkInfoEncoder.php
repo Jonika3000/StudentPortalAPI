@@ -14,27 +14,31 @@ class HomeworkInfoEncoder
 {
     public function encode(Homework $homework): HomeworkInfoResponse
     {
+        $user = $homework->getTeacher()->getAssociatedUser();
+        $lesson = $homework->getLesson();
+        $subject = $lesson->getSubject();
+
         return new HomeworkInfoResponse(
             id: $homework->getId(),
             teacher: new Teacher(
                 id: $homework->getTeacher()->getId(),
                 associatedUser: new User(
-                    id: $homework->getTeacher()->getAssociatedUser()->getId(),
-                    uuid: $homework->getTeacher()->getAssociatedUser()->getUuid(),
-                    firstName: $homework->getTeacher()->getAssociatedUser()->getFirstName(),
-                    secondName: $homework->getTeacher()->getAssociatedUser()->getSecondName(),
-                    email: $homework->getTeacher()->getAssociatedUser()->getEmail(),
-                    avatarPath: $homework->getTeacher()->getAssociatedUser()->getAvatarPath(),
+                    id: $user->getId(),
+                    uuid: $user->getUuid(),
+                    firstName: $user->getFirstName(),
+                    secondName: $user->getSecondName(),
+                    email: $user->getEmail(),
+                    avatarPath: $user->getAvatarPath(),
                 ),
             ),
             description: $homework->getDescription(),
             lesson: new Lesson(
-                id: $homework->getLesson()->getId(),
+                id: $lesson->getId(),
                 subject: new Subject(
-                    id: $homework->getLesson()->getSubject()->getId(),
-                    name: $homework->getLesson()->getSubject()->getName(),
-                    description: $homework->getLesson()->getSubject()->getDescription(),
-                    imagePath: $homework->getLesson()->getSubject()->getImagePath(),
+                    id: $subject->getId(),
+                    name: $subject->getName(),
+                    description: $subject->getDescription(),
+                    imagePath: $subject->getImagePath(),
                 ),
             ),
             deadline: $homework->getDeadline(),

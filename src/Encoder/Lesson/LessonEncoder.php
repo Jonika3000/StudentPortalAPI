@@ -10,13 +10,15 @@ class LessonEncoder
 {
     public function encode(LessonEntity $lesson): LessonResponse
     {
+        $subject = $lesson->getSubject();
+
         return new LessonResponse(
             id: $lesson->getId(),
             subject: new Subject(
-                id: $lesson->getSubject()->getId(),
-                name: $lesson->getSubject()->getName(),
-                description: $lesson->getSubject()->getDescription(),
-                imagePath: $lesson->getSubject()->getImagePath(),
+                id: $subject->getId(),
+                name: $subject->getName(),
+                description: $subject->getDescription(),
+                imagePath: $subject->getImagePath(),
             ),
         );
     }
