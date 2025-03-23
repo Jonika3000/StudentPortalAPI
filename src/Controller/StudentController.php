@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Constants\UserRoles;
 use App\Encoder\Student\StudentInfoEncoder;
 use App\Entity\Student;
+use App\Helper\ExceptionHandlerHelper;
 use App\Services\StudentService;
 use App\Services\UserService;
-use App\Utils\ExceptionHandleHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +22,7 @@ class StudentController extends AbstractController
         private readonly UserService $userService,
         private readonly StudentService $studentService,
         private readonly StudentInfoEncoder $encoder,
+        private readonly ExceptionHandlerHelper $exceptionHandler,
     ) {
     }
 
@@ -50,7 +51,7 @@ class StudentController extends AbstractController
 
             return new JsonResponse($data, Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 

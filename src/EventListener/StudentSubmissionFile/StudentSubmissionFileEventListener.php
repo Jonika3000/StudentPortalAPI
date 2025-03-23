@@ -3,7 +3,7 @@
 namespace App\EventListener\StudentSubmissionFile;
 
 use App\Entity\StudentSubmissionFile;
-use App\Utils\FileHelper;
+use App\Helper\FileHelper;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class StudentSubmissionFileEventListener

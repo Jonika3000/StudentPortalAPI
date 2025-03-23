@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Utils;
+namespace App\Helper;
 
+use App\Utils\ImageResize;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileHelper

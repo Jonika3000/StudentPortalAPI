@@ -4,7 +4,7 @@ namespace App\Admin;
 
 use App\Constants\UserRoles;
 use App\Entity\Teacher;
-use App\Utils\FileHelper;
+use App\Helper\FileHelper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
