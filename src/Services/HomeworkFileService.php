@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Entity\Homework;
 use App\Entity\HomeworkFile;
+use App\Helper\FileHelper;
 use App\Repository\HomeworkFileRepository;
-use App\Utils\FileHelper;
 use Symfony\Component\Uid\Uuid;
 
 readonly class HomeworkFileService

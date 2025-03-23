@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace App\Mapper;
 
 use App\Constants\ErrorCodes;
 use App\Shared\Response\Exception\Homework\HomeworkPermissionException;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-class ExceptionHandleHelper
+class ExceptionMapper
 {
     public static array $errorMapping = [
         StudentSubmissionNotFound::class => [
@@ -51,9 +51,9 @@ class ExceptionHandleHelper
         ],
     ];
 
-    public static function handleException(\Throwable $exception): JsonResponse
+    public static function map(\Throwable $exception): JsonResponse
     {
-        $error = ExceptionHandleHelper::$errorMapping[$exception::class] ?? null;
+        $error = ExceptionMapper::$errorMapping[$exception::class] ?? null;
 
         if ('dev' === $_ENV['APP_ENV']) {
             return new JsonResponse([

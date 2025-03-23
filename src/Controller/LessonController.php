@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use App\Encoder\Lesson\LessonEncoder;
 use App\Entity\Lesson;
+use App\Helper\ExceptionHandlerHelper;
 use App\Services\LessonService;
 use App\Services\UserService;
 use App\Shared\Response\Exception\AccessDeniedException;
-use App\Utils\ExceptionHandleHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,6 +21,7 @@ class LessonController extends AbstractController
         private readonly UserService $userService,
         private readonly LessonService $lessonService,
         private readonly LessonEncoder $encoder,
+        private readonly ExceptionHandlerHelper $exceptionHandler,
     ) {
     }
 
@@ -52,7 +53,7 @@ class LessonController extends AbstractController
 
             return new JsonResponse($data, Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -94,7 +95,7 @@ class LessonController extends AbstractController
 
             return new JsonResponse($data, Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 }

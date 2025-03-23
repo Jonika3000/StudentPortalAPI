@@ -8,11 +8,11 @@ use App\Decoder\Homework\HomeworkPostDecoder;
 use App\Decoder\Homework\HomeworkUpdateDecoder;
 use App\Encoder\Homework\HomeworkInfoEncoder;
 use App\Entity\Homework;
+use App\Helper\ExceptionHandlerHelper;
 use App\Request\Homework\HomeworkPostRequest;
 use App\Request\Homework\HomeworkUpdateRequest;
 use App\Services\HomeworkService;
 use App\Services\UserService;
-use App\Utils\ExceptionHandleHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +27,7 @@ class HomeworkController extends AbstractController
         private readonly UserService $userService,
         private readonly HomeworkService $homeworkService,
         private readonly HomeworkFileBagDecoder $fileBagDecoder,
+        private readonly ExceptionHandlerHelper $exceptionHandler
     ) {
     }
 
@@ -63,7 +64,7 @@ class HomeworkController extends AbstractController
 
             return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -106,7 +107,7 @@ class HomeworkController extends AbstractController
 
             return new JsonResponse($encoder->encode($homework));
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -142,7 +143,7 @@ class HomeworkController extends AbstractController
 
             return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -188,7 +189,7 @@ class HomeworkController extends AbstractController
 
             return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 }

@@ -9,12 +9,12 @@ use App\Decoder\Password\PasswordResetRequestDecoder;
 use App\Decoder\User\RegisterRequestDecoder;
 use App\Decoder\User\UserEditRequestDecoder;
 use App\Encoder\User\UserInfoEncoder;
+use App\Helper\ExceptionHandlerHelper;
 use App\Request\Password\PasswordResetRequest;
 use App\Request\Password\PasswordResetRequestRequest;
 use App\Request\User\RegisterRequest;
 use App\Request\User\UserEditRequest;
 use App\Services\UserService;
-use App\Utils\ExceptionHandleHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,6 +28,7 @@ class UserController extends AbstractController
         private readonly UserService $userService,
         private readonly RegisterRequestDecoder $registerRequestDecoder,
         private readonly RegisterFileBagDecoder $registerFileBagDecoder,
+        private readonly ExceptionHandlerHelper $exceptionHandler,
     ) {
     }
 
@@ -54,7 +55,7 @@ class UserController extends AbstractController
         try {
             $user = $this->userService->getCurrentUser();
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
         $data = $encoder->encode($user);
 
@@ -101,7 +102,7 @@ class UserController extends AbstractController
         try {
             return new JsonResponse($this->userService->resetPasswordRequest($params->email), Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -144,7 +145,7 @@ class UserController extends AbstractController
         try {
             return new JsonResponse($this->userService->passwordReset($params->resetToken, $params->newPassword), Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -191,7 +192,7 @@ class UserController extends AbstractController
 
             return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 

@@ -3,7 +3,7 @@
 namespace App\EventListener\HomeworkFile;
 
 use App\Entity\HomeworkFile;
-use App\Utils\FileHelper;
+use App\Helper\FileHelper;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;

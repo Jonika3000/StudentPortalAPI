@@ -8,11 +8,11 @@ use App\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
 use App\Decoder\StudentSubmission\StudentSubmissionUpdateDecoder;
 use App\Encoder\StudentSubmission\StudentSubmissionInfoEncoder;
 use App\Entity\StudentSubmission;
+use App\Helper\ExceptionHandlerHelper;
 use App\Request\StudentSubmission\StudentSubmissionPostRequest;
 use App\Request\StudentSubmission\StudentSubmissionUpdateRequest;
 use App\Services\StudentSubmissionService;
 use App\Services\UserService;
-use App\Utils\ExceptionHandleHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +27,7 @@ class StudentSubmissionController extends AbstractController
         private readonly StudentSubmissionService $studentSubmissionService,
         private readonly UserService $userService,
         private readonly StudentSubmissionFileBagDecoder $fileBagDecoder,
+        private readonly ExceptionHandlerHelper $exceptionHandler,
     ) {
     }
 
@@ -74,7 +75,7 @@ class StudentSubmissionController extends AbstractController
                 Response::HTTP_CREATED
             );
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -115,7 +116,7 @@ class StudentSubmissionController extends AbstractController
 
             return new JsonResponse([], Response::HTTP_NO_CONTENT);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -162,7 +163,7 @@ class StudentSubmissionController extends AbstractController
                 Response::HTTP_OK
             );
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -222,7 +223,7 @@ class StudentSubmissionController extends AbstractController
                 Response::HTTP_OK
             );
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 }

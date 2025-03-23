@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\User;
+use App\Helper\FileHelper;
 use App\Params\FilesParams\RegisterFilesParams;
 use App\Params\FilesParams\UserEditFilesParams;
 use App\Params\User\RegisterParams;
@@ -10,7 +11,6 @@ use App\Params\User\UserEditParams;
 use App\Repository\UserRepository;
 use App\Shared\Response\Exception\MailException;
 use App\Shared\Response\Exception\User\IncorrectUserConfigurationException;
-use App\Utils\FileHelper;
 use Random\RandomException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

@@ -6,11 +6,11 @@ use App\Constants\UserRoles;
 use App\Decoder\Grade\GradePostDecoder;
 use App\Decoder\Grade\GradeUpdateDecoder;
 use App\Entity\Grade;
+use App\Helper\ExceptionHandlerHelper;
 use App\Request\Grade\GradePostRequest;
 use App\Request\Grade\GradeUpdateRequest;
 use App\Services\GradeService;
 use App\Services\UserService;
-use App\Utils\ExceptionHandleHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,6 +24,7 @@ class GradeController extends AbstractController
     public function __construct(
         private readonly GradeService $gradeService,
         private readonly UserService $userService,
+        private readonly ExceptionHandlerHelper $exceptionHandler
     ) {
     }
 
@@ -61,7 +62,7 @@ class GradeController extends AbstractController
 
             return new JsonResponse('Success', Response::HTTP_CREATED);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -105,7 +106,7 @@ class GradeController extends AbstractController
 
             return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 
@@ -142,7 +143,7 @@ class GradeController extends AbstractController
 
             return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return ExceptionHandleHelper::handleException($exception);
+            return $this->exceptionHandler->handle($exception);
         }
     }
 }
