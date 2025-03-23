@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
+use App\Encoder\Student\StudentInfoEncoder;
 use App\Entity\Student;
 use App\Services\StudentService;
 use App\Services\UserService;
@@ -13,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'api_')]
 class StudentController extends AbstractController
@@ -21,7 +21,7 @@ class StudentController extends AbstractController
     public function __construct(
         private readonly UserService $userService,
         private readonly StudentService $studentService,
-        private readonly SerializerInterface $serializer,
+        private readonly StudentInfoEncoder $encoder,
     ) {
     }
 
@@ -39,13 +39,14 @@ class StudentController extends AbstractController
             new OA\Response(response: 404, description: 'Student not found'),
         ]
     )]
+    #[IsGranted(UserRoles::STUDENT)]
     #[Route('/student/me', name: 'student_me', methods: 'GET')]
     public function get(): JsonResponse
     {
         try {
             $user = $this->userService->getCurrentUser();
             $student = $this->studentService->getStudentByUser($user);
-            $data = $this->serializer->serialize($student, 'json', ['groups' => ['student_read', 'user_read']]);
+            $data = $this->encoder->encode($student);
 
             return new JsonResponse($data, Response::HTTP_OK);
         } catch (\Exception $exception) {
@@ -79,10 +80,10 @@ class StudentController extends AbstractController
     )]
     #[IsGranted(UserRoles::TEACHER)]
     #[Route('/student/{id}', name: 'student_get', methods: 'GET')]
-    public function find(Student $student, SerializerInterface $serializer): JsonResponse
+    public function getStudentInfo(Student $student): JsonResponse
     {
-        $data = $serializer->serialize($student, 'json', ['groups' => ['student_read', 'user_read']]);
+        $data = $this->encoder->encode($student);
 
-        return new JsonResponse($data, Response::HTTP_OK, [], true);
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 }

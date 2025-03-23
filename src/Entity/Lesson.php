@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// @TODO: make LessonSchedule
 #[ORM\Entity(repositoryClass: LessonRepository::class)]
 class Lesson implements \Stringable
 {
