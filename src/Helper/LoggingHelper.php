@@ -11,7 +11,7 @@ class LoggingHelper
     ) {
     }
 
-    public function logError(\Exception $exception)
+    public function logError(\Exception $exception): void
     {
         $this->logger->error('Exception occurred', [
             'exception' => get_class($exception),
@@ -20,5 +20,10 @@ class LoggingHelper
             'line' => $exception->getLine(),
             'trace' => $exception->getTraceAsString(),
         ]);
+    }
+
+    public function logEvent($message): void
+    {
+        $this->logger->notice();
     }
 }
