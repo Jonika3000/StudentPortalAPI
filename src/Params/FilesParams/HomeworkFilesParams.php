@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class HomeworkFilesParams
 {
     public function __construct(
-        public UploadedFile $files,
+        public UploadedFile $file,
     ) {
     }
 }

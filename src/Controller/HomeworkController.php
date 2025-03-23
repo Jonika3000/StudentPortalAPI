@@ -145,7 +145,6 @@ class HomeworkController extends AbstractController
         }
     }
 
-    //@TODO: files upload doesnt working
     #[OA\Post(
         path: '/api/homework/{id}',
         description: 'Updates a homework entry, accessible by teachers',
@@ -184,9 +183,9 @@ class HomeworkController extends AbstractController
             $params = $homeworkUpdateDecoder->decode($request);
             $files = $this->fileBagDecoder->decode($request->getFiles());
 
-            $updatedHomework = $this->homeworkService->updateAction($homework, $user, $params, $files);
+            $this->homeworkService->updateAction($homework, $user, $params, $files);
 
-            return new JsonResponse($updatedHomework);
+            return new JsonResponse('Success', Response::HTTP_OK);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }

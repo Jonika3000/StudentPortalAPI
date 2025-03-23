@@ -58,7 +58,7 @@ readonly class HomeworkService
 
         if ($files) {
             // foreach ($files->files as $file) {
-            $this->homeworkFileService->saveHomeworkFile($files->files, $homework);
+            $this->homeworkFileService->saveHomeworkFile($files->file, $homework);
             // }
         }
 
@@ -143,9 +143,7 @@ readonly class HomeworkService
                 $this->homeworkFileService->removeHomeworkFile($homeworkFile);
             }
 
-            foreach ($files->files as $file) {
-                $this->homeworkFileService->saveHomeworkFile($file, $homework);
-            }
+            $this->homeworkFileService->saveHomeworkFile($files->file, $homework);
         }
 
         $homework->setDeadline($params->deadline);
