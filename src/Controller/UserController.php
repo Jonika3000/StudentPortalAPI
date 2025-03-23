@@ -26,7 +26,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class UserController extends AbstractController
 {
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
         private readonly UserService $userService,
         private readonly RegisterRequestDecoder $registerRequestDecoder,
         private readonly RegisterFileBagDecoder $registerFileBagDecoder,
@@ -53,8 +52,11 @@ class UserController extends AbstractController
     #[Route('/user/me', name: 'user_me', methods: 'GET')]
     public function getUserInfo(UserInfoEncoder $encoder): JsonResponse
     {
-        $token = $this->tokenStorage->getToken();
-        $user = $this->userService->getUserByToken($token);
+        try {
+            $user = $this->userService->getCurrentUser();
+        } catch (\Exception $exception) {
+            return ExceptionHandleHelper::handleException($exception);
+        }
         $data = $encoder->encode($user);
 
         return new JsonResponse($data, Response::HTTP_OK);

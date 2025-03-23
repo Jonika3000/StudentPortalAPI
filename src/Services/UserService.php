@@ -60,15 +60,9 @@ readonly class UserService
         return $user;
     }
 
-    public function getUserByToken(TokenInterface $token): ?User
+    public function getUserByToken(TokenInterface $token): \Symfony\Component\Security\Core\User\UserInterface
     {
-        $user = $this->security->getUser();
-
-        if (!$user instanceof User) {
-            $user = $this->userRepository->findOneBy(['email' => $user->getUserIdentifier()]);
-        }
-
-        return $user;
+        return $token->getUser();
     }
 
     /**
