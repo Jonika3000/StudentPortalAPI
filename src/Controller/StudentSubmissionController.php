@@ -6,6 +6,7 @@ use App\Constants\UserRoles;
 use App\Decoder\FileBagDecoder\StudentSubmissionFileBagDecoder;
 use App\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
 use App\Decoder\StudentSubmission\StudentSubmissionUpdateDecoder;
+use App\Encoder\StudentSubmission\StudentSubmissionInfoEncoder;
 use App\Entity\StudentSubmission;
 use App\Request\StudentSubmission\StudentSubmissionPostRequest;
 use App\Request\StudentSubmission\StudentSubmissionUpdateRequest;
@@ -18,7 +19,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'api_')]
 class StudentSubmissionController extends AbstractController
@@ -27,7 +27,6 @@ class StudentSubmissionController extends AbstractController
         private readonly StudentSubmissionService $studentSubmissionService,
         private readonly UserService $userService,
         private readonly StudentSubmissionFileBagDecoder $fileBagDecoder,
-        private SerializerInterface $serializer,
     ) {
     }
 
@@ -71,8 +70,8 @@ class StudentSubmissionController extends AbstractController
             $this->studentSubmissionService->postAction($params, $user, $files);
 
             return new JsonResponse(
-                [],
-                Response::HTTP_OK
+                'Success',
+                Response::HTTP_CREATED
             );
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
@@ -114,7 +113,7 @@ class StudentSubmissionController extends AbstractController
             $user = $this->userService->getCurrentUser();
             $this->studentSubmissionService->deleteAction($studentSubmission, $user);
 
-            return new JsonResponse('Success', Response::HTTP_OK);
+            return new JsonResponse([], Response::HTTP_NO_CONTENT);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
@@ -149,16 +148,14 @@ class StudentSubmissionController extends AbstractController
     )]
     #[IsGranted(UserRoles::USER)]
     #[Route('/student/submission/{id}', name: 'student_submission_get', methods: ['GET'])]
-    public function get(StudentSubmission $studentSubmission): JsonResponse
-    {
+    public function getStudentSubmissionInfo(
+        StudentSubmission $studentSubmission,
+        StudentSubmissionInfoEncoder $encoder,
+    ): JsonResponse {
         try {
             $user = $this->userService->getCurrentUser();
             $studentSubmission = $this->studentSubmissionService->getByUser($studentSubmission, $user);
-            $data = $this->serializer->serialize(
-                $studentSubmission,
-                'json',
-                ['groups' => ['student_submission_read', 'user_read', 'grade_read', 'teacher_read', 'student_read', 'homework_read']]
-            );
+            $data = $encoder->encode($studentSubmission);
 
             return new JsonResponse(
                 $data,
@@ -218,9 +215,10 @@ class StudentSubmissionController extends AbstractController
             $user = $this->userService->getCurrentUser();
             $params = $paramsDecoder->decode($request);
             $files = $this->fileBagDecoder->decode($request->getFiles());
+            $this->studentSubmissionService->updateAction($studentSubmission, $params, $user, $files);
 
             return new JsonResponse(
-                $this->studentSubmissionService->updateAction($studentSubmission, $params, $user, $files),
+                'Success',
                 Response::HTTP_OK
             );
         } catch (\Exception $exception) {

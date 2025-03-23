@@ -58,7 +58,7 @@ readonly class HomeworkService
 
         if ($files) {
             // foreach ($files->files as $file) {
-            $this->homeworkFileService->saveHomeworkFile($files->files, $homework);
+            $this->homeworkFileService->saveHomeworkFile($files->file, $homework);
             // }
         }
 
@@ -95,7 +95,7 @@ readonly class HomeworkService
      * @throws AccessDeniedException
      * @throws StudentNotFoundException
      */
-    public function getHomeworkStudent(Homework $homework, User $user): array
+    public function getHomeworkStudent(Homework $homework, User $user): \App\Shared\Response\Homework\HomeworkResponse
     {
         $student = $this->studentRepository->findOneBy(['associatedUser' => $user->getId()]);
         if (!$student) {
@@ -110,9 +110,7 @@ readonly class HomeworkService
             ->filter(fn ($submission) => $submission->getStudent() === $student)
             ->first();
 
-        $response = $this->homeworkEncoder->encode($homework, $studentSubmission);
-
-        return $response->toArray();
+        return $this->homeworkEncoder->encode($homework, $studentSubmission);
     }
 
     /**
@@ -143,9 +141,7 @@ readonly class HomeworkService
                 $this->homeworkFileService->removeHomeworkFile($homeworkFile);
             }
 
-            foreach ($files->files as $file) {
-                $this->homeworkFileService->saveHomeworkFile($file, $homework);
-            }
+            $this->homeworkFileService->saveHomeworkFile($files->file, $homework);
         }
 
         $homework->setDeadline($params->deadline);

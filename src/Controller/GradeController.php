@@ -59,7 +59,7 @@ class GradeController extends AbstractController
 
             $this->gradeService->postAction($user, $params);
 
-            return new JsonResponse('Success', Response::HTTP_OK);
+            return new JsonResponse('Success', Response::HTTP_CREATED);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }

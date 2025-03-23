@@ -18,7 +18,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 readonly class UserService
 {
@@ -30,6 +30,7 @@ readonly class UserService
         private MailerService $mailerService,
         private ParameterBagInterface $params,
         private TokenStorageInterface $tokenStorage,
+        private Security $security
     ) {
     }
 
@@ -59,7 +60,7 @@ readonly class UserService
         return $user;
     }
 
-    public function getUserByToken(TokenInterface $token): UserInterface
+    public function getUserByToken(TokenInterface $token): \Symfony\Component\Security\Core\User\UserInterface
     {
         return $token->getUser();
     }

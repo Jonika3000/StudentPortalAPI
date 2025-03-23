@@ -11,14 +11,4 @@ class StudentSubmissionResponse
         public $grade,
     ) {
     }
-
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'submittedDate' => $this->submittedDate,
-            'comment' => $this->comment,
-            'grade' => $this->grade,
-        ];
-    }
 }

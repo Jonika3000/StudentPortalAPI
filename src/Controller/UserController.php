@@ -8,6 +8,7 @@ use App\Decoder\Password\PasswordResetDecoder;
 use App\Decoder\Password\PasswordResetRequestDecoder;
 use App\Decoder\User\RegisterRequestDecoder;
 use App\Decoder\User\UserEditRequestDecoder;
+use App\Encoder\User\UserInfoEncoder;
 use App\Request\Password\PasswordResetRequest;
 use App\Request\Password\PasswordResetRequestRequest;
 use App\Request\User\RegisterRequest;
@@ -20,17 +21,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'api_')]
 class UserController extends AbstractController
 {
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
         private readonly UserService $userService,
         private readonly RegisterRequestDecoder $registerRequestDecoder,
         private readonly RegisterFileBagDecoder $registerFileBagDecoder,
-        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -52,13 +50,16 @@ class UserController extends AbstractController
         ]
     )]
     #[Route('/user/me', name: 'user_me', methods: 'GET')]
-    public function get(): JsonResponse
+    public function getUserInfo(UserInfoEncoder $encoder): JsonResponse
     {
-        $token = $this->tokenStorage->getToken();
-        $user = $this->userService->getUserByToken($token);
-        $data = $this->serializer->serialize($user, 'json', ['groups' => 'user_read']);
+        try {
+            $user = $this->userService->getCurrentUser();
+        } catch (\Exception $exception) {
+            return ExceptionHandleHelper::handleException($exception);
+        }
+        $data = $encoder->encode($user);
 
-        return new JsonResponse($data, Response::HTTP_OK, [], true);
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
     #[OA\Post(
