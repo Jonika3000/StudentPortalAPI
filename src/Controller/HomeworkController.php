@@ -67,7 +67,6 @@ class HomeworkController extends AbstractController
         }
     }
 
-    // @TODO: as teacher doest working
     #[OA\Get(
         path: '/api/homework/{id}',
         description: 'Retrieve a specific homework entry',
@@ -100,11 +99,12 @@ class HomeworkController extends AbstractController
                 $this->homeworkService->checkAccessHomeworkTeacher($homework, $user);
             }
             if (in_array(UserRoles::STUDENT, $user->getRoles(), true)) {
-                $this->homeworkService->getHomeworkStudent($homework, $user);
-            }
-            $encodedData = $encoder->encode($homework);
+                $encodedData = $this->homeworkService->getHomeworkStudent($homework, $user);
 
-            return new JsonResponse($encodedData);
+                return new JsonResponse($encodedData);
+            }
+
+            return new JsonResponse($encoder->encode($homework));
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }

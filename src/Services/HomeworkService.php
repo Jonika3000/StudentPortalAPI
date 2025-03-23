@@ -95,7 +95,7 @@ readonly class HomeworkService
      * @throws AccessDeniedException
      * @throws StudentNotFoundException
      */
-    public function getHomeworkStudent(Homework $homework, User $user): array
+    public function getHomeworkStudent(Homework $homework, User $user): \App\Shared\Response\Homework\HomeworkResponse
     {
         $student = $this->studentRepository->findOneBy(['associatedUser' => $user->getId()]);
         if (!$student) {
@@ -110,9 +110,7 @@ readonly class HomeworkService
             ->filter(fn ($submission) => $submission->getStudent() === $student)
             ->first();
 
-        $response = $this->homeworkEncoder->encode($homework, $studentSubmission);
-
-        return $response->toArray();
+        return $this->homeworkEncoder->encode($homework, $studentSubmission);
     }
 
     /**
