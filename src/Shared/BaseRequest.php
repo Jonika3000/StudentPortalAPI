@@ -4,6 +4,7 @@ namespace App\Shared;
 
 use App\Shared\Response\ConstraintViolation;
 use App\Shared\Response\Exception\ValidatorException;
+use App\Validator\FileValidator;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -20,6 +21,7 @@ abstract class BaseRequest
         private readonly RequestStack $requestStack,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
+        private readonly FileValidator $fileValidator,
     ) {
         $this->hydrate();
         $this->validate();
@@ -32,6 +34,7 @@ abstract class BaseRequest
     {
         $errors = $this->validator->validate($this);
         $messages = [];
+
         if (count($errors) > 0) {
             foreach ($errors as $message) {
                 $messages[] = new ConstraintViolation(
@@ -40,7 +43,15 @@ abstract class BaseRequest
                     $message->getMessage(),
                 );
             }
+        }
 
+        try {
+            $this->fileValidator->validateFiles($this->getFiles()->all());
+        } catch (ValidatorException $e) {
+            $messages = array_merge($messages, $e->getViolation());
+        }
+
+        if (!empty($messages)) {
             throw new ValidatorException($messages);
         }
     }
