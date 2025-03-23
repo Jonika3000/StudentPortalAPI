@@ -6,7 +6,7 @@ class Homework
 {
     public function __construct(
         public readonly int $id,
-        public readonly string $description
+        public readonly string $description,
     ) {
     }
 }
