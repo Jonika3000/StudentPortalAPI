@@ -12,13 +12,13 @@ use App\Shared\Response\Exception\MailException;
 use App\Shared\Response\Exception\User\IncorrectUserConfigurationException;
 use App\Utils\FileHelper;
 use Random\RandomException;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 
 readonly class UserService
 {
@@ -30,7 +30,7 @@ readonly class UserService
         private MailerService $mailerService,
         private ParameterBagInterface $params,
         private TokenStorageInterface $tokenStorage,
-        private Security $security
+        private Security $security,
     ) {
     }
 

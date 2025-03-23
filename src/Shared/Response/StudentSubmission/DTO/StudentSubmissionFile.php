@@ -7,7 +7,7 @@ class StudentSubmissionFile
     public function __construct(
         public readonly int $id,
         public readonly string $name,
-        public readonly string $path
+        public readonly string $path,
     ) {
     }
 }
