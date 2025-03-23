@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Response\Homework\DTO;
+namespace App\Shared\Response\Common\DTO;
 
 class Lesson
 {

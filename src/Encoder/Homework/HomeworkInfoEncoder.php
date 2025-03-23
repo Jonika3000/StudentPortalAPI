@@ -3,10 +3,10 @@
 namespace App\Encoder\Homework;
 
 use App\Entity\Homework;
+use App\Shared\Response\Common\DTO\Lesson;
+use App\Shared\Response\Common\DTO\Subject;
 use App\Shared\Response\Common\DTO\User;
 use App\Shared\Response\Homework\DTO\HomeworkFile;
-use App\Shared\Response\Homework\DTO\Lesson;
-use App\Shared\Response\Homework\DTO\Subject;
 use App\Shared\Response\Homework\DTO\Teacher;
 use App\Shared\Response\Homework\HomeworkInfoResponse;
 

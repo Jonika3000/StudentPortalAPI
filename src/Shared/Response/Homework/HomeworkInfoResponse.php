@@ -2,8 +2,8 @@
 
 namespace App\Shared\Response\Homework;
 
+use App\Shared\Response\Common\DTO\Lesson;
 use App\Shared\Response\Homework\DTO\HomeworkFile;
-use App\Shared\Response\Homework\DTO\Lesson;
 use App\Shared\Response\Homework\DTO\Teacher;
 
 class HomeworkInfoResponse

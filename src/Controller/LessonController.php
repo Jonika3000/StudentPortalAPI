@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Encoder\Lesson\LessonEncoder;
 use App\Entity\Lesson;
 use App\Services\LessonService;
 use App\Services\UserService;
@@ -20,7 +21,7 @@ class LessonController extends AbstractController
     public function __construct(
         private readonly UserService $userService,
         private readonly LessonService $lessonService,
-        private readonly SerializerInterface $serializer,
+        private readonly LessonEncoder $encoder,
     ) {
     }
 
@@ -46,11 +47,9 @@ class LessonController extends AbstractController
         try {
             $user = $this->userService->getCurrentUser();
             $lessons = $this->lessonService->getLessonsByUser($user);
-            $data = $this->serializer->serialize(
-                $lessons,
-                'json',
-                ['groups' => ['lesson_read', 'subject_read', 'homework_read', 'teacher_read']]
-            );
+            $lessonsArray = $lessons->toArray();
+
+            $data = array_map(fn (Lesson $lesson) => $this->encoder->encode($lesson), $lessonsArray);
 
             return new JsonResponse($data, Response::HTTP_OK);
         } catch (\Exception $exception) {
@@ -92,13 +91,9 @@ class LessonController extends AbstractController
                 throw new AccessDeniedException();
             }
 
-            $data = $this->serializer->serialize(
-                $lesson,
-                'json',
-                ['groups' => ['lesson_read', 'subject_read', 'homework_read', 'teacher_read', 'user_read']]
-            );
+            $data = $this->encoder->encode($lesson);
 
-            return new JsonResponse($data, Response::HTTP_OK, [], true);
+            return new JsonResponse($data, Response::HTTP_OK);
         } catch (\Exception $exception) {
             return ExceptionHandleHelper::handleException($exception);
         }
