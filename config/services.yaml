@@ -13,8 +13,10 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
-    App\Utils\FileHelper:
+    App\EventListener\LoginFailureListener:
+        tags:
+            - { name: kernel.event_listener, event: security.login_failure, method: onLoginFailure }
+    App\Helper\FileHelper:
         arguments:
             $publicDir: '%public_directory%'
     admin.student:

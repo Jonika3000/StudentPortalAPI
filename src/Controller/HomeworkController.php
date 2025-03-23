@@ -62,7 +62,7 @@ class HomeworkController extends AbstractController
             $files = $this->fileBagDecoder->decode($request->getFiles());
             $this->homeworkService->postAction($params, $user, $files);
 
-            return new JsonResponse('Success', Response::HTTP_OK);
+            return new JsonResponse('Success', Response::HTTP_CREATED);
         } catch (\Exception $exception) {
             return $this->exceptionHandler->handle($exception);
         }
@@ -141,7 +141,7 @@ class HomeworkController extends AbstractController
             $user = $this->userService->getCurrentUser();
             $this->homeworkService->deleteAction($homework, $user);
 
-            return new JsonResponse('Success', Response::HTTP_OK);
+            return new JsonResponse('Success', Response::HTTP_NO_CONTENT);
         } catch (\Exception $exception) {
             return $this->exceptionHandler->handle($exception);
         }

@@ -240,6 +240,6 @@ class UserController extends AbstractController
         $params = $this->registerRequestDecoder->decode($request);
         $this->userService->postAction($params, $files);
 
-        return new JsonResponse(['message' => 'Registered Successfully']);
+        return new JsonResponse(['message' => 'Registered Successfully'], Response::HTTP_CREATED);
     }
 }
