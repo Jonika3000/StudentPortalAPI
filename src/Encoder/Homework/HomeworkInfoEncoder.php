@@ -2,10 +2,10 @@
 
 namespace App\Encoder\Homework;
 
+use App\Encoder\Common\UserEncoder;
 use App\Entity\Homework;
 use App\Shared\Response\Common\DTO\Lesson;
 use App\Shared\Response\Common\DTO\Subject;
-use App\Shared\Response\Common\DTO\User;
 use App\Shared\Response\Homework\DTO\HomeworkFile;
 use App\Shared\Response\Homework\DTO\Teacher;
 use App\Shared\Response\Homework\HomeworkInfoResponse;
@@ -17,19 +17,14 @@ class HomeworkInfoEncoder
         $user = $homework->getTeacher()->getAssociatedUser();
         $lesson = $homework->getLesson();
         $subject = $lesson->getSubject();
+        $userEncoder = new UserEncoder();
+        $userEncoded = $userEncoder->encode($user);
 
         return new HomeworkInfoResponse(
             id: $homework->getId(),
             teacher: new Teacher(
                 id: $homework->getTeacher()->getId(),
-                associatedUser: new User(
-                    id: $user->getId(),
-                    uuid: $user->getUuid(),
-                    firstName: $user->getFirstName(),
-                    secondName: $user->getSecondName(),
-                    email: $user->getEmail(),
-                    avatarPath: $user->getAvatarPath(),
-                ),
+                associatedUser: $userEncoded
             ),
             description: $homework->getDescription(),
             lesson: new Lesson(

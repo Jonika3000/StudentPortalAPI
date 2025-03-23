@@ -2,9 +2,9 @@
 
 namespace App\Encoder\StudentSubmission;
 
+use App\Encoder\Common\UserEncoder;
 use App\Entity\StudentSubmission;
 use App\Shared\Response\Common\DTO\Subject;
-use App\Shared\Response\Common\DTO\User;
 use App\Shared\Response\StudentSubmission\DTO\Homework;
 use App\Shared\Response\StudentSubmission\DTO\Student;
 use App\Shared\Response\StudentSubmission\DTO\StudentSubmissionFile;
@@ -14,8 +14,10 @@ class StudentSubmissionInfoEncoder
 {
     public function encode(StudentSubmission $submission): StudentSubmissionInfoResponse
     {
+        $userEncoder = new UserEncoder();
+
         $student = $submission->getStudent();
-        $user = $student->getAssociatedUser();
+        $userEncoded = $userEncoder->encode($student->getAssociatedUser());
         $homework = $submission->getHomework();
         $lesson = $homework->getLesson();
         $subject = $lesson->getSubject();
@@ -27,14 +29,7 @@ class StudentSubmissionInfoEncoder
             grade: $submission->getGrade(),
             student: new Student(
                 id: $student->getId(),
-                user: new User(
-                    id: $user->getId(),
-                    uuid: $user->getUuid(),
-                    firstName: $user->getFirstName(),
-                    secondName: $user->getSecondName(),
-                    email: $user->getEmail(),
-                    avatarPath: $user->getAvatarPath()
-                )
+                user: $userEncoded
             ),
             homework: new Homework(
                 id: $homework->getId(),
