@@ -18,9 +18,10 @@ class StudentSubmissionInfoEncoder
         $subjectEncoder = new SubjectEncoder();
 
         $student = $submission->getStudent();
-        $userEncoded = $userEncoder->encode($student->getAssociatedUser());
         $homework = $submission->getHomework();
         $lesson = $homework->getLesson();
+
+        $userEncoded = $userEncoder->encode($student->getAssociatedUser());
         $subjectEncoded = $subjectEncoder->encode($lesson->getSubject());
 
         return new StudentSubmissionInfoResponse(

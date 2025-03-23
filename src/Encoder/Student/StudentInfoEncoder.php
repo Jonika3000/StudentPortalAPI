@@ -11,8 +11,9 @@ class StudentInfoEncoder
 {
     public function encode(Student $student): StudentInfoResponse
     {
-        $user = $student->getAssociatedUser();
         $userEncoder = new UserEncoder();
+
+        $user = $student->getAssociatedUser();
         $classroom = $student->getClassroom();
         $userEncoded = $userEncoder->encode($user);
 
