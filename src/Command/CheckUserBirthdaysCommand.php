@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
+use App\Helper\LoggingHelper;
 use App\Repository\UserRepository;
 use App\Services\MailerService;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +20,7 @@ class CheckUserBirthdaysCommand extends Command
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly MailerService $mailerService,
-        private readonly LoggerInterface $logger,
+        private readonly LoggingHelper $logger,
     ) {
         parent::__construct();
     }
@@ -43,14 +43,11 @@ class CheckUserBirthdaysCommand extends Command
                     'Happy Birthday!',
                     'email/user/birthday_email.html.twig'
                 );
+                $output->writeln('Birthday email sent to: '.$user->getEmail());
             } catch (TransportExceptionInterface $e) {
-                $this->logger->error('Failed to send birthday email to '.$user->getEmail(), [
-                    'error' => $e->getMessage(),
-                    'exception' => $e,
-                ]);
+                $this->logger->logError($e);
                 $output->writeln('Error occurred: '.$e->getMessage());
             }
-            $output->writeln('Birthday email sent to: '.$user->getEmail());
         }
 
         return Command::SUCCESS;
