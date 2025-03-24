@@ -8,7 +8,7 @@ use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 class LoginFailureListener
 {
     public function __construct(
-        private readonly LogHelper $logger
+        private readonly LogHelper $logger,
     ) {
     }
 

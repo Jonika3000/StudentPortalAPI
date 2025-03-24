@@ -7,11 +7,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class GradeAssignedEvent extends Event
 {
-    private Grade $grade;
-
-    public function __construct(Grade $grade)
-    {
-        $this->grade = $grade;
+    public function __construct(
+        private readonly Grade $grade,
+    ) {
     }
 
     public function getGrade(): Grade

@@ -10,9 +10,8 @@ class GradeAssignedListener
 {
     public function __construct(
         private MailerService $mailerService,
-        private LogHelper $logger
-    )
-    {
+        private LogHelper $logger,
+    ) {
     }
 
     public function onGradeAssigned(GradeAssignedEvent $event)
@@ -28,7 +27,7 @@ class GradeAssignedListener
                 'email/grade/grade_assigned.html.twig',
                 ['grade' => $grade]
             );
-            $this->logger->logEvent("Notification of assessment sent to student: " . $email);
+            $this->logger->logEvent('Notification of assessment sent to student: '.$email);
         } catch (\Exception $e) {
             $this->logger->logError($e);
         }
