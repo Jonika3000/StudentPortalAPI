@@ -2,13 +2,13 @@
 
 namespace App\EventListener\Auth;
 
-use App\Helper\LoggingHelper;
+use App\Helper\LogHelper;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 
 class LoginFailureListener
 {
     public function __construct(
-        private readonly LoggingHelper $logger
+        private readonly LogHelper $logger
     ) {
     }
 

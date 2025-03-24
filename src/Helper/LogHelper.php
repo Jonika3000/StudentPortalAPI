@@ -4,7 +4,7 @@ namespace App\Helper;
 
 use Psr\Log\LoggerInterface;
 
-class LoggingHelper
+class LogHelper
 {
     public function __construct(
         private readonly LoggerInterface $logger,

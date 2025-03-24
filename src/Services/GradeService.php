@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\Grade;
 use App\Entity\User;
+use App\Event\GradeAssignedEvent;
 use App\Params\Grade\GradePostParams;
 use App\Params\Grade\GradeUpdateParams;
 use App\Repository\GradeRepository;
@@ -12,6 +13,7 @@ use App\Shared\Response\Exception\Student\StudentSubmissionNotFound;
 use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;
 use App\Shared\Response\Exception\User\AccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class GradeService
 {
@@ -20,6 +22,7 @@ class GradeService
         private readonly StudentSubmissionRepository $studentSubmissionRepository,
         private readonly TeacherService $teacherService,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly EventDispatcherInterface  $eventDispatcher
     ) {
     }
 
@@ -50,6 +53,8 @@ class GradeService
             ->setTeacher($teacher);
 
         $this->gradeRepository->saveAction($grade);
+
+        $this->eventDispatcher->dispatch(new GradeAssignedEvent($grade));
     }
 
     /**
@@ -65,6 +70,8 @@ class GradeService
             ->setComment($params->comment);
 
         $this->gradeRepository->saveAction($grade);
+
+        $this->eventDispatcher->dispatch(new GradeAssignedEvent($grade));
     }
 
     /**

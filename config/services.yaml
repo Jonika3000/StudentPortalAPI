@@ -16,6 +16,9 @@ services:
     App\EventListener\Auth\LoginFailureListener:
         tags:
             - { name: kernel.event_listener, event: Symfony\Component\Security\Http\Event\LoginFailureEvent, method: onLoginFailure }
+    App\EventListener\Grade\GradeAssignedListener:
+        tags:
+            - { name: kernel.event_listener, event: App\Event\GradeAssignedEvent, method: onGradeAssigned }
     App\Helper\FileHelper:
         arguments:
             $publicDir: '%public_directory%'

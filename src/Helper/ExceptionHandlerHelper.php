@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ExceptionHandlerHelper
 {
     public function __construct(
-        private readonly LoggingHelper $logger
+        private readonly LogHelper $logger
     ) {
     }
 
