@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Helper\LoggingHelper;
+use App\Helper\LogHelper;
 use App\Repository\UserRepository;
 use App\Services\MailerService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,8 +19,8 @@ class CheckUserBirthdaysCommand extends Command
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly MailerService $mailerService,
-        private readonly LoggingHelper $logger,
+        private readonly MailerService  $mailerService,
+        private readonly LogHelper      $logger,
     ) {
         parent::__construct();
     }
