@@ -24,7 +24,7 @@ class GradeController extends AbstractController
     public function __construct(
         private readonly GradeService $gradeService,
         private readonly UserService $userService,
-        private readonly ExceptionHandlerHelper $exceptionHandler
+        private readonly ExceptionHandlerHelper $exceptionHandler,
     ) {
     }
 

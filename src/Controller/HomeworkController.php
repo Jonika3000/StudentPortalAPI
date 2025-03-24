@@ -27,7 +27,7 @@ class HomeworkController extends AbstractController
         private readonly UserService $userService,
         private readonly HomeworkService $homeworkService,
         private readonly HomeworkFileBagDecoder $fileBagDecoder,
-        private readonly ExceptionHandlerHelper $exceptionHandler
+        private readonly ExceptionHandlerHelper $exceptionHandler,
     ) {
     }
 

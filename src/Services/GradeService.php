@@ -22,7 +22,7 @@ class GradeService
         private readonly StudentSubmissionRepository $studentSubmissionRepository,
         private readonly TeacherService $teacherService,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly EventDispatcherInterface  $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
