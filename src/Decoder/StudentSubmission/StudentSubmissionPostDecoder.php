@@ -3,7 +3,7 @@
 namespace App\Decoder\StudentSubmission;
 
 use App\Params\StudentSubmission\StudentSubmissionPostParams;
-use App\Request\StudentSubmission\StudentSubmissionPostRequest;
+use App\Shared\Request\StudentSubmission\StudentSubmissionPostRequest;
 
 class StudentSubmissionPostDecoder
 {

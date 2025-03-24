@@ -13,9 +13,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\EventListener\LoginFailureListener:
+    App\EventListener\Auth\LoginFailureListener:
         tags:
-            - { name: kernel.event_listener, event: security.login_failure, method: onLoginFailure }
+            - { name: kernel.event_listener, event: Symfony\Component\Security\Http\Event\LoginFailureEvent, method: onLoginFailure }
     App\Helper\FileHelper:
         arguments:
             $publicDir: '%public_directory%'

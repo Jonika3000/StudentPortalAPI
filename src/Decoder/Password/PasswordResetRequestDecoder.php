@@ -3,7 +3,7 @@
 namespace App\Decoder\Password;
 
 use App\Params\Password\PasswordResetRequestParams;
-use App\Request\Password\PasswordResetRequestRequest;
+use App\Shared\Request\Password\PasswordResetRequestRequest;
 
 class PasswordResetRequestDecoder
 {

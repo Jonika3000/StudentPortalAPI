@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Request\Grade;
+namespace App\Shared\Request\StudentSubmission;
 
-use App\Shared\BaseRequest;
+use App\Shared\Request\BaseRequest;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
-class GradePostRequest extends BaseRequest
+class StudentSubmissionPostRequest extends BaseRequest
 {
     #[NotBlank]
     #[NotNull]
-    public int $grade;
-
     #[Length(
         max: 255,
         maxMessage: 'Comment cannot be longer than {{ limit }} characters.'
     )]
     public string $comment;
 
+    #[NotBlank]
     #[NotNull]
-    public int $studentSubmission;
+    public int $homework;
 }

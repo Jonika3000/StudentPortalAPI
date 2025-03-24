@@ -3,7 +3,7 @@
 namespace App\Decoder\User;
 
 use App\Params\User\UserEditParams;
-use App\Request\User\UserEditRequest;
+use App\Shared\Request\User\UserEditRequest;
 
 class UserEditRequestDecoder
 {

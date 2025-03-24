@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Request\Homework;
+namespace App\Shared\Request\Homework;
 
-use App\Shared\BaseRequest;
+use App\Shared\Request\BaseRequest;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
