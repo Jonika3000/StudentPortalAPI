@@ -3,7 +3,7 @@
 namespace App\Decoder\Grade;
 
 use App\Params\Grade\GradePostParams;
-use App\Request\Grade\GradePostRequest;
+use App\Shared\Request\Grade\GradePostRequest;
 
 class GradePostDecoder
 {

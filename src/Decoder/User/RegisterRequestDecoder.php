@@ -3,7 +3,7 @@
 namespace App\Decoder\User;
 
 use App\Params\User\RegisterParams;
-use App\Request\User\RegisterRequest;
+use App\Shared\Request\User\RegisterRequest;
 
 class RegisterRequestDecoder
 {

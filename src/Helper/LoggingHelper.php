@@ -24,6 +24,6 @@ class LoggingHelper
 
     public function logEvent($message): void
     {
-        $this->logger->notice();
+        $this->logger->info($message);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Request\User;
+namespace App\Shared\Request\User;
 
-use App\Shared\BaseRequest;
+use App\Shared\Request\BaseRequest;
 use App\Validator\Constraint\PhoneNumber;
 
 class UserEditRequest extends BaseRequest

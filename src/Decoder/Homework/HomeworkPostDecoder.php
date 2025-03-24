@@ -3,7 +3,7 @@
 namespace App\Decoder\Homework;
 
 use App\Params\Homework\HomeworkPostParams;
-use App\Request\Homework\HomeworkPostRequest;
+use App\Shared\Request\Homework\HomeworkPostRequest;
 
 class HomeworkPostDecoder
 {

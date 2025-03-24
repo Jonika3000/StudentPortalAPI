@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared;
+namespace App\Shared\Request;
 
 use App\Shared\Response\ConstraintViolation;
 use App\Shared\Response\Exception\ValidatorException;
