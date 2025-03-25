@@ -3,11 +3,11 @@
 namespace App\Tests\Unit\Controller;
 
 use App\Controller\HomeworkController;
-use App\Decoder\FileBagDecoder\HomeworkFileBagDecoder;
-use App\Decoder\Homework\HomeworkPostDecoder;
-use App\Decoder\Homework\HomeworkUpdateDecoder;
 use App\Entity\Homework;
 use App\Entity\User;
+use App\Serializer\Decoder\FileBagDecoder\HomeworkFileBagDecoder;
+use App\Serializer\Decoder\Homework\HomeworkPostDecoder;
+use App\Serializer\Decoder\Homework\HomeworkUpdateDecoder;
 use App\Services\HomeworkService;
 use App\Services\UserService;
 use App\Shared\Request\Homework\HomeworkPostRequest;

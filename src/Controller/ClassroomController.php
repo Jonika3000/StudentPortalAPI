@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
-use App\Encoder\Classroom\ClassroomInfoEncoder;
 use App\Entity\Classroom;
+use App\Serializer\Encoder\Classroom\ClassroomInfoEncoder;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

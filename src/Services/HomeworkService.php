@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Encoder\Homework\HomeworkEncoder;
+use App\Dto\Params\FilesParams\HomeworkFilesParams;
+use App\Dto\Params\Homework\HomeworkPostParams;
+use App\Dto\Params\Homework\HomeworkUpdateParams;
 use App\Entity\Homework;
 use App\Entity\Student;
 use App\Entity\User;
-use App\Params\FilesParams\HomeworkFilesParams;
-use App\Params\Homework\HomeworkPostParams;
-use App\Params\Homework\HomeworkUpdateParams;
 use App\Repository\HomeworkRepository;
 use App\Repository\LessonRepository;
 use App\Repository\StudentRepository;
+use App\Serializer\Encoder\Homework\HomeworkEncoder;
 use App\Shared\Response\Exception\Lesson\LessonNotFound;
 use App\Shared\Response\Exception\Student\StudentNotFoundException;
 use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;

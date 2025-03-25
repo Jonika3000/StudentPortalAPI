@@ -3,10 +3,10 @@
 namespace App\Tests\Unit\Controller;
 
 use App\Controller\StudentSubmissionController;
-use App\Decoder\FileBagDecoder\StudentSubmissionFileBagDecoder;
-use App\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
 use App\Entity\StudentSubmission;
 use App\Entity\User;
+use App\Serializer\Decoder\FileBagDecoder\StudentSubmissionFileBagDecoder;
+use App\Serializer\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
 use App\Services\StudentSubmissionService;
 use App\Services\UserService;
 use App\Shared\Request\StudentSubmission\StudentSubmissionPostRequest;

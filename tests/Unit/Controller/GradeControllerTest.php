@@ -3,10 +3,10 @@
 namespace App\Tests\Unit\Controller;
 
 use App\Controller\GradeController;
-use App\Decoder\Grade\GradePostDecoder;
-use App\Decoder\Grade\GradeUpdateDecoder;
 use App\Entity\Grade;
 use App\Entity\User;
+use App\Serializer\Decoder\Grade\GradePostDecoder;
+use App\Serializer\Decoder\Grade\GradeUpdateDecoder;
 use App\Services\GradeService;
 use App\Services\UserService;
 use App\Shared\Request\Grade\GradePostRequest;

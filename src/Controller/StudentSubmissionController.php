@@ -3,16 +3,16 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
-use App\Decoder\FileBagDecoder\StudentSubmissionFileBagDecoder;
-use App\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
-use App\Decoder\StudentSubmission\StudentSubmissionUpdateDecoder;
-use App\Encoder\StudentSubmission\StudentSubmissionInfoEncoder;
 use App\Entity\StudentSubmission;
-use App\Helper\ExceptionHandlerHelper;
+use App\Serializer\Decoder\FileBagDecoder\StudentSubmissionFileBagDecoder;
+use App\Serializer\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
+use App\Serializer\Decoder\StudentSubmission\StudentSubmissionUpdateDecoder;
+use App\Serializer\Encoder\StudentSubmission\StudentSubmissionInfoEncoder;
 use App\Services\StudentSubmissionService;
 use App\Services\UserService;
-use App\Shared\Request\StudentSubmission\StudentSubmissionPostRequest;
-use App\Shared\Request\StudentSubmission\StudentSubmissionUpdateRequest;
+use App\Dto\Request\StudentSubmission\StudentSubmissionPostRequest;
+use App\Dto\Request\StudentSubmission\StudentSubmissionUpdateRequest;
+use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

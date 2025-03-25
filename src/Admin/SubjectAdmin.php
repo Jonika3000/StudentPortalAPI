@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\Subject;
-use App\Helper\FileHelper;
+use App\Support\Helper\FileHelper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;

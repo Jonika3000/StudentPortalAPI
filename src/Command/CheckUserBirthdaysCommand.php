@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Helper\LogHelper;
 use App\Repository\UserRepository;
-use App\Services\MailerService;
+use App\Services\LoggerService;
+use App\Services\UserService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,8 +19,8 @@ class CheckUserBirthdaysCommand extends Command
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly MailerService $mailerService,
-        private readonly LogHelper $logger,
+        private readonly UserService    $userService,
+        private readonly LoggerService  $logger,
     ) {
         parent::__construct();
     }
@@ -28,21 +28,17 @@ class CheckUserBirthdaysCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $today = new \DateTime();
-        $usersWithBirthday = $this->userRepository->findUsersByBirthday($today);
+        $users = $this->userRepository->findUsersByBirthday($today);
 
-        if (empty($usersWithBirthday)) {
+        if (empty($users)) {
             $output->writeln('No birthdays today.');
 
             return Command::SUCCESS;
         }
 
-        foreach ($usersWithBirthday as $user) {
+        foreach ($users as $user) {
             try {
-                $this->mailerService->sendMail(
-                    $user->getEmail(),
-                    'Happy Birthday!',
-                    'email/user/birthday_email.html.twig'
-                );
+                $this->userService->congratulateOnBirthday($user);
                 $output->writeln('Birthday email sent to: '.$user->getEmail());
             } catch (TransportExceptionInterface $e) {
                 $this->logger->logError($e);
