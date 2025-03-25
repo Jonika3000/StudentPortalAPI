@@ -2,7 +2,7 @@
 
 namespace App\Support\Helper;
 
-use App\Serializer\Encoder\Exception\ExceptionEncoder;
+use App\Serializer\Decoder\Exception\ExceptionDecoder;
 use App\Services\LoggerService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -17,6 +17,6 @@ class ExceptionHandlerHelper
     {
         $this->logger->logError($exception);
 
-        return ExceptionEncoder::map($exception);
+        return ExceptionDecoder::map($exception);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Serializer\Encoder\Exception;
+namespace App\Serializer\Decoder\Exception;
 
 use App\Constants\ErrorCodes;
 use App\Shared\Response\Exception\Homework\HomeworkPermissionException;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-class ExceptionEncoder
+class ExceptionDecoder
 {
     public static array $errorMapping = [
         StudentSubmissionNotFound::class => [
@@ -53,7 +53,7 @@ class ExceptionEncoder
 
     public static function map(\Throwable $exception): JsonResponse
     {
-        $error = ExceptionEncoder::$errorMapping[$exception::class] ?? null;
+        $error = ExceptionDecoder::$errorMapping[$exception::class] ?? null;
 
         if ('dev' === $_ENV['APP_ENV']) {
             return new JsonResponse([
