@@ -3,9 +3,8 @@
 namespace App\Command;
 
 use App\Repository\UserRepository;
-use App\Services\MailerService;
+use App\Services\LoggerService;
 use App\Services\UserService;
-use App\Support\Helper\LogHelper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,8 +19,8 @@ class CheckUserBirthdaysCommand extends Command
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly UserService $userService,
-        private readonly LogHelper $logger,
+        private readonly UserService    $userService,
+        private readonly LoggerService  $logger,
     ) {
         parent::__construct();
     }

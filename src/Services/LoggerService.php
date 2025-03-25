@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Support\Helper;
+namespace App\Services;
 
 use Psr\Log\LoggerInterface;
 
-class LogHelper
+class LoggerService
 {
     public function __construct(
         private readonly LoggerInterface $logger,

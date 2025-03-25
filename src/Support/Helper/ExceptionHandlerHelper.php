@@ -3,12 +3,13 @@
 namespace App\Support\Helper;
 
 use App\Serializer\Encoder\Exception\ExceptionEncoder;
+use App\Services\LoggerService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ExceptionHandlerHelper
 {
     public function __construct(
-        private readonly LogHelper $logger,
+        private readonly LoggerService $logger,
     ) {
     }
 

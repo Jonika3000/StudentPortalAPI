@@ -3,14 +3,14 @@
 namespace App\Event\Listener\Grade;
 
 use App\Event\GradeAssignedEvent;
+use App\Services\LoggerService;
 use App\Services\MailerService;
-use App\Support\Helper\LogHelper;
 
 class GradeAssignedListener
 {
     public function __construct(
         private MailerService $mailerService,
-        private LogHelper $logger,
+        private LoggerService $logger,
     ) {
     }
 
