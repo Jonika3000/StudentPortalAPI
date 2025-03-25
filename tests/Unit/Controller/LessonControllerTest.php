@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\Controller;
 
+use App\Entity\User;
 use App\Controller\LessonController;
 use App\Services\LessonService;
 use App\Services\UserService;
@@ -17,7 +18,7 @@ class LessonControllerTest extends TestCase
         $userService = $this->createMock(UserService::class);
         $lessonService = $this->createMock(LessonService::class);
 
-        $userMock = $this->createMock(\App\Entity\User::class);
+        $userMock = $this->createMock(User::class);
         $lessonsMock = new ArrayCollection([]);
 
         $userService->method('getCurrentUser')->willReturn($userMock);

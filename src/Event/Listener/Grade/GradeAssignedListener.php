@@ -9,8 +9,8 @@ use App\Services\MailerService;
 class GradeAssignedListener
 {
     public function __construct(
-        private MailerService $mailerService,
-        private LoggerService $logger,
+        private readonly MailerService $mailerService,
+        private readonly LoggerService $logger,
     ) {
     }
 

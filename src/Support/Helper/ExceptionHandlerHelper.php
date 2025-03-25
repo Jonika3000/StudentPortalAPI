@@ -13,7 +13,7 @@ class ExceptionHandlerHelper
     ) {
     }
 
-    public function handle(\Exception $exception): JsonResponse
+    public function handle(\Throwable $exception): JsonResponse
     {
         $this->logger->logError($exception);
 

@@ -14,7 +14,7 @@ class LoggerService
     public function logError(\Exception $exception): void
     {
         $this->logger->error('Exception occurred', [
-            'exception' => get_class($exception),
+            'exception' => $exception::class,
             'message' => $exception->getMessage(),
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),

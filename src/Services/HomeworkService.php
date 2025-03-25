@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Shared\Response\Homework\HomeworkResponse;
 use App\Dto\Params\FilesParams\HomeworkFilesParams;
 use App\Dto\Params\Homework\HomeworkPostParams;
 use App\Dto\Params\Homework\HomeworkUpdateParams;
@@ -95,7 +96,7 @@ readonly class HomeworkService
      * @throws AccessDeniedException
      * @throws StudentNotFoundException
      */
-    public function getHomeworkStudent(Homework $homework, User $user): \App\Shared\Response\Homework\HomeworkResponse
+    public function getHomeworkStudent(Homework $homework, User $user): HomeworkResponse
     {
         $student = $this->studentRepository->findOneBy(['associatedUser' => $user->getId()]);
         if (!$student) {
