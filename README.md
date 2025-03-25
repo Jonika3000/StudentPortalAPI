@@ -187,3 +187,4 @@ This project is primarily an REST API with a Sonata Admin Panel:
 - **Profiler**: To monitor and debug application activities, visit `/_profiler`. Profiler offers detailed insights into requests, exceptions, database queries, and more. (Dev only).
 
 - **Logs**: Symfony logs detailed information about application activity, including errors, warnings, and debug messages. Logs can be found in the var/log/ directory.
+
