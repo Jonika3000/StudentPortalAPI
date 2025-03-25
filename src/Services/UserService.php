@@ -12,7 +12,6 @@ use App\Shared\Response\Exception\MailException;
 use App\Shared\Response\Exception\User\IncorrectUserConfigurationException;
 use App\Support\Helper\FileHelper;
 use Random\RandomException;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -158,5 +157,17 @@ readonly class UserService
         }
 
         $this->userRepository->updateAction($user);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function congratulateOnBirthday(User $user): void
+    {
+        $this->mailerService->sendMail(
+            $user->getEmail(),
+            'Happy Birthday!',
+            'email/user/birthday_email.html.twig'
+        );
     }
 }
