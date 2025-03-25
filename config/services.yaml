@@ -5,21 +5,21 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-    App\Security\Voter\GradeVoter:
-        tags: [ 'security.voter' ]
     App\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\EventListener\Auth\LoginFailureListener:
+    App\Security\Voter\GradeVoter:
+        tags: [ 'security.voter' ]
+    App\Event\Listener\Auth\LoginFailureListener:
         tags:
             - { name: kernel.event_listener, event: Symfony\Component\Security\Http\Event\LoginFailureEvent, method: onLoginFailure }
-    App\EventListener\Grade\GradeAssignedListener:
+    App\Event\Listener\Grade\GradeAssignedListener:
         tags:
             - { name: kernel.event_listener, event: App\Event\GradeAssignedEvent, method: onGradeAssigned }
-    App\Helper\FileHelper:
+    App\Support\Helper\FileHelper:
         arguments:
             $publicDir: '%public_directory%'
     admin.student:

@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use App\Decoder\FileBagDecoder\RegisterFileBagDecoder;
-use App\Decoder\FileBagDecoder\UserEditFileBagDecoder;
-use App\Decoder\Password\PasswordResetDecoder;
-use App\Decoder\Password\PasswordResetRequestDecoder;
-use App\Decoder\User\RegisterRequestDecoder;
-use App\Decoder\User\UserEditRequestDecoder;
-use App\Encoder\User\UserInfoEncoder;
-use App\Helper\ExceptionHandlerHelper;
+use App\Serializer\Decoder\FileBagDecoder\RegisterFileBagDecoder;
+use App\Serializer\Decoder\FileBagDecoder\UserEditFileBagDecoder;
+use App\Serializer\Decoder\Password\PasswordResetDecoder;
+use App\Serializer\Decoder\Password\PasswordResetRequestDecoder;
+use App\Serializer\Decoder\User\RegisterRequestDecoder;
+use App\Serializer\Decoder\User\UserEditRequestDecoder;
+use App\Serializer\Encoder\User\UserInfoEncoder;
 use App\Services\UserService;
-use App\Shared\Request\Password\PasswordResetRequest;
-use App\Shared\Request\Password\PasswordResetRequestRequest;
-use App\Shared\Request\User\RegisterRequest;
-use App\Shared\Request\User\UserEditRequest;
+use App\Dto\Request\Password\PasswordResetRequest;
+use App\Dto\Request\Password\PasswordResetRequestRequest;
+use App\Dto\Request\User\RegisterRequest;
+use App\Dto\Request\User\UserEditRequest;
+use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

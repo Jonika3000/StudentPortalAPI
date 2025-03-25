@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Dto\Params\Grade\GradePostParams;
+use App\Dto\Params\Grade\GradeUpdateParams;
 use App\Entity\Grade;
 use App\Entity\User;
 use App\Event\GradeAssignedEvent;
-use App\Params\Grade\GradePostParams;
-use App\Params\Grade\GradeUpdateParams;
 use App\Repository\GradeRepository;
 use App\Repository\StudentSubmissionRepository;
 use App\Shared\Response\Exception\Student\StudentSubmissionNotFound;

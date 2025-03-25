@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Entity\StudentSubmission;
 use App\Entity\StudentSubmissionFile;
-use App\Helper\FileHelper;
 use App\Repository\StudentSubmissionFileRepository;
+use App\Support\Helper\FileHelper;
 use Symfony\Component\Uid\Uuid;
 
 readonly class StudentSubmissionFileService

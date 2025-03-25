@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Dto\Params\FilesParams\StudentSubmissionFilesParams;
+use App\Dto\Params\StudentSubmission\StudentSubmissionPostParams;
+use App\Dto\Params\StudentSubmission\StudentSubmissionUpdateParams;
 use App\Entity\StudentSubmission;
 use App\Entity\User;
-use App\Params\FilesParams\StudentSubmissionFilesParams;
-use App\Params\StudentSubmission\StudentSubmissionPostParams;
-use App\Params\StudentSubmission\StudentSubmissionUpdateParams;
 use App\Repository\StudentSubmissionRepository;
 use App\Shared\Response\Exception\AccessDeniedException;
 use App\Shared\Response\Exception\Homework\HomeworkPermissionException;

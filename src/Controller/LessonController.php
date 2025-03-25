@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Encoder\Lesson\LessonEncoder;
 use App\Entity\Lesson;
-use App\Helper\ExceptionHandlerHelper;
+use App\Serializer\Encoder\Lesson\LessonEncoder;
 use App\Services\LessonService;
 use App\Services\UserService;
 use App\Shared\Response\Exception\AccessDeniedException;
+use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

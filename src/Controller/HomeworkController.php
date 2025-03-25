@@ -3,16 +3,16 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
-use App\Decoder\FileBagDecoder\HomeworkFileBagDecoder;
-use App\Decoder\Homework\HomeworkPostDecoder;
-use App\Decoder\Homework\HomeworkUpdateDecoder;
-use App\Encoder\Homework\HomeworkInfoEncoder;
 use App\Entity\Homework;
-use App\Helper\ExceptionHandlerHelper;
+use App\Serializer\Decoder\FileBagDecoder\HomeworkFileBagDecoder;
+use App\Serializer\Decoder\Homework\HomeworkPostDecoder;
+use App\Serializer\Decoder\Homework\HomeworkUpdateDecoder;
+use App\Serializer\Encoder\Homework\HomeworkInfoEncoder;
 use App\Services\HomeworkService;
 use App\Services\UserService;
-use App\Shared\Request\Homework\HomeworkPostRequest;
-use App\Shared\Request\Homework\HomeworkUpdateRequest;
+use App\Dto\Request\Homework\HomeworkPostRequest;
+use App\Dto\Request\Homework\HomeworkUpdateRequest;
+use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
-use App\Encoder\Student\StudentInfoEncoder;
 use App\Entity\Student;
-use App\Helper\ExceptionHandlerHelper;
+use App\Serializer\Encoder\Student\StudentInfoEncoder;
 use App\Services\StudentService;
 use App\Services\UserService;
+use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
