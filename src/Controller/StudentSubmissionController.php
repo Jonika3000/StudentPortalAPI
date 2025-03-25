@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
+use App\Dto\Request\StudentSubmission\StudentSubmissionPostRequest;
+use App\Dto\Request\StudentSubmission\StudentSubmissionUpdateRequest;
 use App\Entity\StudentSubmission;
 use App\Serializer\Decoder\FileBagDecoder\StudentSubmissionFileBagDecoder;
 use App\Serializer\Decoder\StudentSubmission\StudentSubmissionPostDecoder;
@@ -10,8 +12,6 @@ use App\Serializer\Decoder\StudentSubmission\StudentSubmissionUpdateDecoder;
 use App\Serializer\Encoder\StudentSubmission\StudentSubmissionInfoEncoder;
 use App\Services\StudentSubmissionService;
 use App\Services\UserService;
-use App\Dto\Request\StudentSubmission\StudentSubmissionPostRequest;
-use App\Dto\Request\StudentSubmission\StudentSubmissionUpdateRequest;
 use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

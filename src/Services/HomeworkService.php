@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Shared\Response\Homework\HomeworkResponse;
 use App\Dto\Params\FilesParams\HomeworkFilesParams;
 use App\Dto\Params\Homework\HomeworkPostParams;
 use App\Dto\Params\Homework\HomeworkUpdateParams;
@@ -17,6 +16,7 @@ use App\Shared\Response\Exception\Lesson\LessonNotFound;
 use App\Shared\Response\Exception\Student\StudentNotFoundException;
 use App\Shared\Response\Exception\Teacher\TeacherNotFoundException;
 use App\Shared\Response\Exception\User\AccessDeniedException;
+use App\Shared\Response\Homework\HomeworkResponse;
 
 readonly class HomeworkService
 {

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
+use App\Dto\Request\Homework\HomeworkPostRequest;
+use App\Dto\Request\Homework\HomeworkUpdateRequest;
 use App\Entity\Homework;
 use App\Serializer\Decoder\FileBagDecoder\HomeworkFileBagDecoder;
 use App\Serializer\Decoder\Homework\HomeworkPostDecoder;
@@ -10,8 +12,6 @@ use App\Serializer\Decoder\Homework\HomeworkUpdateDecoder;
 use App\Serializer\Encoder\Homework\HomeworkInfoEncoder;
 use App\Services\HomeworkService;
 use App\Services\UserService;
-use App\Dto\Request\Homework\HomeworkPostRequest;
-use App\Dto\Request\Homework\HomeworkUpdateRequest;
 use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

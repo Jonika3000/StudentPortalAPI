@@ -19,8 +19,8 @@ class CheckUserBirthdaysCommand extends Command
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly UserService    $userService,
-        private readonly LoggerService  $logger,
+        private readonly UserService $userService,
+        private readonly LoggerService $logger,
     ) {
         parent::__construct();
     }

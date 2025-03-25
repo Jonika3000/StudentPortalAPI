@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Constants\UserRoles;
+use App\Dto\Request\Grade\GradePostRequest;
+use App\Dto\Request\Grade\GradeUpdateRequest;
 use App\Entity\Grade;
 use App\Serializer\Decoder\Grade\GradePostDecoder;
 use App\Serializer\Decoder\Grade\GradeUpdateDecoder;
 use App\Services\GradeService;
 use App\Services\UserService;
-use App\Dto\Request\Grade\GradePostRequest;
-use App\Dto\Request\Grade\GradeUpdateRequest;
 use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

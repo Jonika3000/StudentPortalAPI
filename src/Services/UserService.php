@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use App\Dto\Params\FilesParams\RegisterFilesParams;
 use App\Dto\Params\FilesParams\UserEditFilesParams;
 use App\Dto\Params\User\RegisterParams;
@@ -19,6 +18,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 readonly class UserService
 {

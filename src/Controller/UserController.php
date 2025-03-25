@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Dto\Request\Password\PasswordResetRequest;
+use App\Dto\Request\Password\PasswordResetRequestRequest;
+use App\Dto\Request\User\RegisterRequest;
+use App\Dto\Request\User\UserEditRequest;
 use App\Serializer\Decoder\FileBagDecoder\RegisterFileBagDecoder;
 use App\Serializer\Decoder\FileBagDecoder\UserEditFileBagDecoder;
 use App\Serializer\Decoder\Password\PasswordResetDecoder;
@@ -10,10 +14,6 @@ use App\Serializer\Decoder\User\RegisterRequestDecoder;
 use App\Serializer\Decoder\User\UserEditRequestDecoder;
 use App\Serializer\Encoder\User\UserInfoEncoder;
 use App\Services\UserService;
-use App\Dto\Request\Password\PasswordResetRequest;
-use App\Dto\Request\Password\PasswordResetRequestRequest;
-use App\Dto\Request\User\RegisterRequest;
-use App\Dto\Request\User\UserEditRequest;
 use App\Support\Helper\ExceptionHandlerHelper;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
